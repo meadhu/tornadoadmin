@@ -11,6 +11,7 @@ import tornado.ioloop
 
 from tornado.options import define, options
 
+from config import *
 from handler import *
 # from models import *
 
@@ -23,7 +24,9 @@ class Application(tornado.web.Application):
         # 创建全局连接池
         # from utils.sqlhelp import cnxpool
         # self.conn = cnxpool.get_connection()
+        # 读取配置文件 页面上: handler.settings["site_title"] , handler中 self.settings["site_title"]
         default = dict(
+            config=config_params,
             site_title="TornadoAdmin",
             template_path=os.path.join(os.path.dirname(__file__), "templates"),
             static_path=os.path.join(os.path.dirname(__file__), "static"),

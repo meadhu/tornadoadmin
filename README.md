@@ -2,58 +2,33 @@
 <br/>
 <br/>
   <h1 align="center">
-    Pear Admin Flask
+    Tornado Admin
   </h1>
   <h4 align="center">
-    开 箱 即 用 的 Flask 快 速 开 发 平 台
-  </h4> 
+    基于Tornado的ORM管理后台
+  </h4>
 
-  [预 览](http://flask.pearadmin.com)   |   [官 网](http://www.pearadmin.com/)   |   [群聊](https://jq.qq.com/?_wv=1027&k=5OdSmve)   |   [社区](http://forum.pearadmin.com/)
-
-
-<p align="center">
-    <a href="#">
-        <img src="https://img.shields.io/badge/pear%20admin%20flask-1.0.0-green" alt="Pear Admin Layui Version">
-    </a>
-    <a href="#">
-        <img src="https://img.shields.io/badge/Python-3.6+-green.svg" alt="Python Version">
-    </a>
-      <a href="#">
-        <img src="https://img.shields.io/badge/Mysql-5.3.2+-green.svg" alt="Mysql Version">
-    </a>
-</p>
 </div>
 
+
+<div style="color:red">
+重要说明:
+项目使用的UI来源 <a href="https://gitee.com/pear-admin/pear-admin-flask">【Pear Admin Flask】</a>，感谢原作者分享 
+</div>
+
+
+
+
 <div align="center">
-  <img  width="92%" style="border-radius:10px;margin-top:20px;margin-bottom:20px;box-shadow: 2px 0 6px gray;" src="https://images.gitee.com/uploads/images/2020/1019/104805_042b888c_4835367.png" />
+  <img  width="100%" style="border-radius:10px;margin-top:20px;margin-bottom:20px;box-shadow: 2px 0 6px gray;" src="docs/screen1.png" />
 </div>
 
 #### 项目简介
->Pear Admin Flask 基于 Flask  的后台管理系统，拥抱应用广泛的python语言，通过使用本系统，即可快速构建你的功能业务
+>Tornado Admin 基于 Tornado 的后台管理系统，拥抱应用广泛的python语言，通过使用本系统，即可快速构建你的功能业务
 >
 >项目旨在为python开发者提供一个后台管理系统的模板，成为您构建信息管理系统，物联网后台....等等应用时灵活，简单的工具
 >
 >众人拾柴火焰高，欢迎pythoner参与项目~
-
-Pear Admin Flask 有以下几个版本：					
-
-[master分支版本 ](https://gitee.com/pear-admin/pear-admin-flask/tree/master/)  
-
->	flask 2.0.1	+	flask-sqlalchemy	+	mysql	+	权限验证	+	Flask-APScheduler	定时任务	+	marshmallow 序列化与数据验证
-
-[Mini 分支版本 ](https://gitee.com/pear-admin/pear-admin-flask/tree/mini/)
-
->flask 2.0.1	+	flask-sqlalchemy	+	sqllite	+	权限验证	+	Flask-RESTful	 序列化与数据验证
-
-[v1 分支版本(不再更新，仅供参考) ](https://gitee.com/pear-admin/pear-admin-flask/tree/v1/)
-
->flask 1.12	+	flask-sqlalchemy	+ mysql		+	权限验证	+	marshmallow 序列化与数据验证
-
-[simple 分支版本(不再更新，仅供参考) ](https://gitee.com/pear-admin/pear-admin-flask/tree/simple/)
-
->flask 1.12	+	flask-sqlalchemy	+ mysql	+	极简权限	+	marshmallow 序列化与数据验证
->
->项目最简版本
 
 ####  内置功能
 
@@ -70,7 +45,7 @@ Pear Admin Flask 有以下几个版本：
 ####  项目结构
 
 ```
-Pear Admin Flask
+Tornado Admin
 ├─applications  # 应用
 │  ├─configs  # 配置文件
 │  │  ├─ common.py  # 普通配置
@@ -96,10 +71,10 @@ Pear Admin Flask
 
 ```bash
 # 下 载
-git clone https://gitee.com/pear-admin/pear-admin-flask
+git clone https://gitee.com/meadhu/tornadoadmin.git
 
 # 安 装
-pip install -r requirement\requirement-dev.txt
+pip install -r requirements.txt
 
 # 配 置
 .env
@@ -141,26 +116,16 @@ python -m venv venv
 ```bash
 # 初 始 化 数 据 库
 
-flask init
+python app.py init
 ```
 
-执行 flask run 命令启动项目
+执行 python app.py 命令启动项目
 
-#### 命令行创建视图
+#### 命令行生成新模块的CRUD
 
 ```bash
 # 示例
-
-flask new --type view --name test/a
-
-# 自动注册蓝图
-# 访问http://127.0.0.1:5000/test/a/
+python app.py crud <表名>
 ```
 
 #### 预览项目
-
-|  |  |
-|---------------------|---------------------|
-| ![](docs/assets/1.jpg)  | ![](docs/assets/2.jpg)  |
-| ![](docs/assets/3.jpg)|  ![](docs/assets/4.jpg)   |
-| ![](docs/assets/5.jpg) |  ![](docs/assets/6.jpg)   |
