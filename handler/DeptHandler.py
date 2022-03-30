@@ -6,7 +6,10 @@ from __future__ import absolute_import
 
 import json
 
+from common import session
+from common.DbHelper import object_to_dict
 from common.HttpHelper import authorize
+from models.admin_dept import Dept
 from . import BaseHandler
 
 
@@ -19,16 +22,20 @@ class DeptHandler(BaseHandler):
     # @dept_bp.post('/data')
     @authorize("admin:dept:main", log=True)
     def data(self):
-        # dept = Dept.query.order_by(Dept.sort).all()
-        # power_data = curd.model_to_dicts(schema=DeptOutSchema, data=dept)
-        # res = {
-        #     "data": power_data
-        # }
-        # return jsonify(res)
-        path = "static/admin/admin/data/dept.json"
-        with open(path, 'r') as load_f:
-            data = json.loads(load_f.read())
-            self.jsonify(data)
+        # result = session.query(Dept).first().dept_name  # 查找第一个
+        # result = session.query(Dept).first()
+        # print(object_to_dict(result))
+        result = session.query(Dept).order_by(Dept.id).all()  # 查找第一个
+        data = [object_to_dict(i) for i in result]
+        res = {
+            "data": data
+        }
+        return self.jsonify(res)
+
+        # path = "static/admin/admin/data/dept.json"
+        # with open(path, 'r') as load_f:
+        #     data = json.loads(load_f.read())
+        #     self.jsonify(data)
 
     # @dept_bp.get('/add')
     @authorize("admin:dept:add", log=True)
@@ -60,18 +67,23 @@ class DeptHandler(BaseHandler):
     # @authorize("admin:dept:add", log=True)
     # @use_args(DeptInSchema(), location="json", unknown=True)
     def save(self):
-        # dept = Dept(
-        #     parent_id=args['parentId'],
-        #     dept_name=args['deptName'],
-        #     sort=args['sort'],
-        #     leader=args['leader'],
-        #     phone=args['phone'],
-        #     email=args['email'],
-        #     status=args['status'],
-        #     address=args['address']
-        # )
-        # r = db.session.add(dept)
-        # db.session.commit()
+        # 插入单条数据
+
+        args = self.request
+        dept = Dept(
+            parent_id=args.get('parent_id'),
+            dept_name=args['dept_name'],
+            sort=args['sort'],
+            leader=args['leader'],
+            phone=args['phone'],
+            email=args['email'],
+            status=args['status'],
+            address=args['address']
+        )
+        # 只添加，还没有提交，如果出错还可以撤回(rollback)
+        session.add(dept)
+        # 提交到数据库
+        session.commit()
         return self.success_api(msg="成功")
 
     # @dept_bp.get('/edit')
@@ -79,6 +91,7 @@ class DeptHandler(BaseHandler):
     def edit(self):
         # _id = request.args.get("deptId")
         # dept = curd.get_one_by_id(model=Dept,id=_id)
+        dept = {}
         return self.render_template('admin/dept/edit.html', dept=dept)
 
     # 启用

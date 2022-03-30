@@ -74,8 +74,7 @@ Tornado Admin
 git clone https://gitee.com/meadhu/tornadoadmin.git
 
 # 安 装
-pip install -r requirements.txt
-
+pip install -r requirements.txt -i https://pypi.douban.com/simple
 # 配 置
 .env
 

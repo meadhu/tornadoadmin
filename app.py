@@ -11,19 +11,18 @@ import tornado.ioloop
 
 from tornado.options import define, options
 
-from config import *
-from handler import *
-# from models import *
-
 define("port", default=3000, help="run on the given port", type=int)
 define("env", default='dev', type=str)
+os.environ['app_env'] = options.env
+
+# print(os.environ)
+
+from config import *
+from handler import *
 
 
 class Application(tornado.web.Application):
     def __init__(self, router, NotFound=None, **settings):
-        # 创建全局连接池
-        # from utils.sqlhelp import cnxpool
-        # self.conn = cnxpool.get_connection()
         # 读取配置文件 页面上: handler.settings["site_title"] , handler中 self.settings["site_title"]
         default = dict(
             config=config_params,

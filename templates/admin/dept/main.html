@@ -83,8 +83,8 @@
       treetable.render({
         treeColIndex: 1,
         treeSpid: 0,
-        treeIdName: 'deptId',
-        treePidName: 'parentId',
+        treeIdName: 'id',
+        treePidName: 'parent_id',
         skin: 'line',
         method: 'post',
         treeDefaultClose: false,
@@ -95,7 +95,7 @@
         cols: [
           [
             { type: 'checkbox' },
-            { field: 'deptName', minWidth: 200, title: '部门名称' },
+            { field: 'dept_name', minWidth: 200, title: '部门名称' },
             { field: 'leader', title: '负责人' },
             { field: 'phone', title: '联系方式' },
             { field: 'email', title: '邮箱' },

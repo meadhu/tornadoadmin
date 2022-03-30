@@ -1,0 +1,9 @@
+certifi==2016.9.26
+greenlet==1.1.2
+importlib-metadata==4.8.3
+psutil==5.9.0
+PyMySQL==1.0.2
+SQLAlchemy==1.4.32
+tornado==6.1
+typing-extensions==4.1.1
+zipp==3.6.0

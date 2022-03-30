@@ -6,7 +6,10 @@ from __future__ import absolute_import
 
 import json
 
+from common import session
+from common.DbHelper import object_to_dict
 from common.HttpHelper import authorize
+from models.admin_dict import DictType
 from . import BaseHandler
 
 
@@ -18,7 +21,14 @@ class DictHandler(BaseHandler):
 
     # @admin_dict.get('/dictType/data')
     @authorize("admin:dict:main", log=True)
-    def dict_type_data(self):
+    def type_data(self):
+        result = session.query(DictType).order_by(DictType.id).all()  # 查找第一个
+        data = [object_to_dict(i) for i in result]
+        print(data)
+        res = {
+            "data": data
+        }
+        return self.jsonify(res)
         # 获取请求参数
         # type_name = xss_escape(request.args.get('typeName', type=str))
         # # 查询参数构造
