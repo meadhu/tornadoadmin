@@ -1,0 +1,48 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "表名称列表",
+      "parentId": 0
+    },
+    {
+      "id": 100,
+      "name": "S层-表列表",
+      "parentId": 1
+    },
+    {
+      "id": 200,
+      "name": "L层-表列表",
+      "parentId": 1
+    },
+    {
+      "id": 300,
+      "name": "P层-表列表",
+      "parentId": 1
+    },
+    {
+      "id": 101,
+      "name": "s_table_a",
+      "parentId": 100
+    },
+    {
+      "id": 102,
+      "name": "s_table_b",
+      "parentId": 100
+    },
+    {
+      "id": 201,
+      "name": "l_table_a",
+      "parentId": 200
+    },
+    {
+      "id": 301,
+      "name": "p_table_a",
+      "parentId": 300
+    }
+  ],
+  "status": {
+    "code": 200,
+    "message": "默认"
+  }
+}

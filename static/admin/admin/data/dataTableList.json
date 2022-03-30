@@ -1,0 +1,20 @@
+{
+	"code": 0,
+	"msg": "...",
+	"count": 1,
+	"data": [{
+		"OWNER": "GZMPC",
+		"TABLE_NAME": "DEPT",
+		"TABLE_TYPE": "TABLE",
+		"TABLE_COMMENTS": "部门表",
+		"COLUMN_NAME": "ID",
+		"COLUMN_COMMENTS": "主键ID"
+	},{
+		"OWNER": "GZMPC",
+		"TABLE_NAME": "DEPT",
+		"TABLE_TYPE": "TABLE",
+		"TABLE_COMMENTS": "部门表",
+		"COLUMN_NAME": "NAME",
+		"COLUMN_COMMENTS": "名称"
+	} ]
+}

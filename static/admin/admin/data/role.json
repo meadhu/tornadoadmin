@@ -1,0 +1,26 @@
+{
+  "code": 0,
+  "count": 2,
+  "data": [
+    {
+      "details": "管理员",
+      "enable": "1",
+      "id": 1,
+      "remark": null,
+      "roleCode": "admin",
+      "roleName": "管理员",
+      "sort": 1
+    },
+    {
+      "details": "只有查看，没有增删改权限",
+      "enable": "1",
+      "id": 2,
+      "remark": null,
+      "roleCode": "common",
+      "roleName": "普通用户",
+      "sort": 2
+    }
+  ],
+  "limit": 10,
+  "msg": ""
+}

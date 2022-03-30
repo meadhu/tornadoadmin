@@ -1,0 +1,59 @@
+{
+  "data": [
+    {
+      "address": "这是总公司",
+      "deptId": 1,
+      "deptName": "总公司",
+      "email": "123qq.com",
+      "leader": "就眠仪式",
+      "parentId": 0,
+      "phone": "12312345679",
+      "sort": 1,
+      "status": "1"
+    },
+    {
+      "address": "这是济南",
+      "deptId": 4,
+      "deptName": "济南分公司",
+      "email": "1234qq.com",
+      "leader": "就眠仪式",
+      "parentId": 1,
+      "phone": "12312345678",
+      "sort": 2,
+      "status": "1"
+    },
+    {
+      "address": "这是唐山",
+      "deptId": 5,
+      "deptName": "唐山分公司",
+      "email": "123@qq.com",
+      "leader": "mkg",
+      "parentId": 1,
+      "phone": "12312345678",
+      "sort": 4,
+      "status": "1"
+    },
+    {
+      "address": "测试",
+      "deptId": 7,
+      "deptName": "济南分公司开发部",
+      "email": "123@qq.com",
+      "leader": "就眠仪式",
+      "parentId": 4,
+      "phone": "12312345678",
+      "sort": 5,
+      "status": "1"
+    },
+    {
+      "address": "测试部",
+      "deptId": 8,
+      "deptName": "唐山测试部",
+      "email": "123@qq.com",
+      "leader": "mkg",
+      "parentId": 5,
+      "phone": "12312345678",
+      "sort": 6,
+      "status": "1"
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "colors": [
+    {
+      "color": "#2d8cf0",
+      "id": "1"
+    },
+    {
+      "color": "#5FB878",
+      "id": "2"
+    },
+    {
+      "color": "#1E9FFF",
+      "id": "3"
+    },
+    {
+      "color": "#FFB800",
+      "id": "4"
+    },
+    {
+      "color": "darkgray",
+      "id": "5"
+    }
+  ],
+  "header": false,
+  "links": [
+    {
+      "href": "http://www.pearadmin.com",
+      "icon": "layui-icon layui-icon-auz",
+      "title": "官方网站"
+    },
+    {
+      "href": "http://www.pearadmin.com",
+      "icon": "layui-icon layui-icon-auz",
+      "title": "开发文档"
+    },
+    {
+      "href": "https://gitee.com/Jmysy/Pear-Admin-Layui",
+      "icon": "layui-icon layui-icon-auz",
+      "title": "开源地址"
+    }
+  ],
+  "logo": {
+    "image": "/static/admin/admin/images/logo.png",
+    "title": "Tornado Admin"
+  },
+  "menu": {
+    "accordion": true,
+    "async": true,
+    "collaspe": false,
+    "control": false,
+    "controlWidth": 500,
+    "data": "/admin/home/rights_menu",
+    "method": "GET",
+    "select": "0"
+  },
+  "other": {
+    "autoHead": false,
+    "keepLoad": 1200
+  },
+  "tab": {
+    "enable": true,
+    "index": {
+      "href": "/admin/home/welcome",
+      "id": "10",
+      "title": "首页"
+    },
+    "keepState": true,
+    "max": 30,
+    "session": true
+  },
+  "theme": {
+    "allowCustom": true,
+    "defaultColor": "2",
+    "defaultMenu": "dark-theme"
+  }
+}

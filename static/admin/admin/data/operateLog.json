@@ -1,0 +1,173 @@
+{
+  "code": 0,
+  "count": 15,
+  "data": [
+    {
+      "create_time": "2022-03-28T12:11:46",
+      "desc": "{&#39;page&#39;: &#39;1&#39;, &#39;limit&#39;: &#39;10&#39;}",
+      "id": 1500,
+      "ip": "127.0.0.1",
+      "method": "GET",
+      "success": true,
+      "uid": "1",
+      "url": "/admin/file/table",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36"
+    },
+    {
+      "create_time": "2022-03-28T12:11:45",
+      "desc": "{}",
+      "id": 1499,
+      "ip": "127.0.0.1",
+      "method": "GET",
+      "success": true,
+      "uid": "1",
+      "url": "/admin/file/",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36"
+    },
+    {
+      "create_time": "2022-03-28T12:11:40",
+      "desc": "{&#39;page&#39;: &#39;1&#39;, &#39;limit&#39;: &#39;10&#39;}",
+      "id": 1498,
+      "ip": "127.0.0.1",
+      "method": "GET",
+      "success": true,
+      "uid": "1",
+      "url": "/admin/dict/dictType/data",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36"
+    },
+    {
+      "create_time": "2022-03-28T12:11:39",
+      "desc": "{}",
+      "id": 1497,
+      "ip": "127.0.0.1",
+      "method": "GET",
+      "success": true,
+      "uid": "1",
+      "url": "/admin/dict/",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36"
+    },
+    {
+      "create_time": "2022-03-28T12:11:34",
+      "desc": "{}",
+      "id": 1496,
+      "ip": "127.0.0.1",
+      "method": "GET",
+      "success": true,
+      "uid": "1",
+      "url": "/admin/monitor/",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36"
+    },
+    {
+      "create_time": "2022-03-28T12:11:16",
+      "desc": "{}",
+      "id": 1495,
+      "ip": "127.0.0.1",
+      "method": "POST",
+      "success": true,
+      "uid": "1",
+      "url": "/dept/data",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36"
+    },
+    {
+      "create_time": "2022-03-28T12:11:15",
+      "desc": "{}",
+      "id": 1494,
+      "ip": "127.0.0.1",
+      "method": "GET",
+      "success": true,
+      "uid": "1",
+      "url": "/dept/",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36"
+    },
+    {
+      "create_time": "2022-03-28T12:11:07",
+      "desc": "{}",
+      "id": 1493,
+      "ip": "127.0.0.1",
+      "method": "POST",
+      "success": true,
+      "uid": "1",
+      "url": "/admin/power/data",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36"
+    },
+    {
+      "create_time": "2022-03-28T12:11:06",
+      "desc": "{}",
+      "id": 1492,
+      "ip": "127.0.0.1",
+      "method": "GET",
+      "success": true,
+      "uid": "1",
+      "url": "/admin/power/",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36"
+    },
+    {
+      "create_time": "2022-03-28T12:11:02",
+      "desc": "{&#39;page&#39;: &#39;1&#39;, &#39;limit&#39;: &#39;10&#39;}",
+      "id": 1491,
+      "ip": "127.0.0.1",
+      "method": "GET",
+      "success": true,
+      "uid": "1",
+      "url": "/admin/role/data",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36"
+    },
+    {
+      "create_time": "2022-03-28T12:11:01",
+      "desc": "{}",
+      "id": 1490,
+      "ip": "127.0.0.1",
+      "method": "GET",
+      "success": true,
+      "uid": "1",
+      "url": "/admin/role/",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36"
+    },
+    {
+      "create_time": "2022-03-28T12:10:45",
+      "desc": "{&#39;page&#39;: &#39;1&#39;, &#39;limit&#39;: &#39;10&#39;}",
+      "id": 1489,
+      "ip": "127.0.0.1",
+      "method": "GET",
+      "success": true,
+      "uid": "1",
+      "url": "/admin/user/data",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36"
+    },
+    {
+      "create_time": "2022-03-28T12:10:20",
+      "desc": "{&#39;page&#39;: &#39;1&#39;, &#39;limit&#39;: &#39;10&#39;}",
+      "id": 1487,
+      "ip": "127.0.0.1",
+      "method": "GET",
+      "success": true,
+      "uid": "1",
+      "url": "/admin/user/data",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36"
+    },
+    {
+      "create_time": "2022-03-28T12:10:20",
+      "desc": "{}",
+      "id": 1488,
+      "ip": "127.0.0.1",
+      "method": "GET",
+      "success": true,
+      "uid": "1",
+      "url": "/dept/tree",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36"
+    },
+    {
+      "create_time": "2022-03-28T12:10:19",
+      "desc": "{}",
+      "id": 1486,
+      "ip": "127.0.0.1",
+      "method": "GET",
+      "success": true,
+      "uid": "1",
+      "url": "/admin/user/",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36"
+    }
+  ],
+  "limit": 10,
+  "msg": ""
+}
