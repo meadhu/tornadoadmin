@@ -4,8 +4,16 @@
 from __future__ import absolute_import
 
 import json
+import traceback
 
+import tornado
+from tornado.escape import json_decode
+from tornado.escape import xhtml_escape as xss_escape
+
+from common import session
+from common.DbHelper import object_to_dict
 from common.HttpHelper import authorize
+from models.admin_role import Role
 from . import BaseHandler
 
 
@@ -22,8 +30,8 @@ class RoleHandler(BaseHandler):
     @authorize("admin:role:main", log=True)
     def data(self):
         # 获取请求参数
-        # role_name = xss_escape(request.args.get('roleName', type=str))
-        # role_code = xss_escape(request.args.get('roleCode', type=str))
+        role_name = self.get_argument('roleName', '')
+        role_code = self.get_argument('roleCode', '')
         # # 查询参数构造
         # mf = ModelFilter()
         # if role_name:
@@ -36,10 +44,15 @@ class RoleHandler(BaseHandler):
         # count = role.total
         # # 返回api
         # return table_api(data=model_to_dicts(schema=RoleOutSchema, data=role.items), count=count)
-        path = "static/admin/admin/data/role.json"
-        with open(path, 'r') as load_f:
-            data = json.loads(load_f.read())
-            self.jsonify(data)
+
+        result = session.query(Role).order_by(Role.id).all()  # 查找第一个
+        data = [object_to_dict(i) for i in result]
+        return self.table_api(data=data, count=len(data))
+
+        # path = "static/admin/admin/data/role.json"
+        # with open(path, 'r') as load_f:
+        #     data = json.loads(load_f.read())
+        #     self.jsonify(data)
 
     # 角色增加
     # @admin_role.get('/add')
@@ -47,26 +60,29 @@ class RoleHandler(BaseHandler):
     def add(self):
         return self.render_template('admin/role/add.html')
 
-
     # 角色增加
     # @admin_role.post('/save')
     @authorize("admin:role:add", log=True)
     def save(self):
-        # req = request.json
-        # details = xss_escape(req.get("details"))
-        # enable = xss_escape(req.get("enable"))
-        # roleCode = xss_escape(req.get("roleCode"))
-        # roleName = xss_escape(req.get("roleName"))
-        # sort = xss_escape(req.get("sort"))
-        # role = Role(
-        #     details=details,
-        #     enable=enable,
-        #     code=roleCode,
-        #     name=roleName,
-        #     sort=sort
-        # )
-        # db.session.add(role)
-        # db.session.commit()
+        req = json_decode(self.request.body)
+        details = xss_escape(req.get("details"))
+        enable = xss_escape(req.get("enable"))
+        roleCode = xss_escape(req.get("roleCode"))
+        roleName = xss_escape(req.get("roleName"))
+        sort = xss_escape(req.get("sort"))
+        role = Role(
+            details=details,
+            enable=enable,
+            code=roleCode,
+            name=roleName,
+            sort=sort
+        )
+        try:
+            session.add(role)
+            session.commit()
+        except Exception as e:
+            print(traceback.format_exc())
+            return self.fail_api()
         return self.success_api(msg="成功")
 
 
@@ -126,8 +142,13 @@ class RoleHandler(BaseHandler):
     @authorize("admin:role:edit", log=True)
     def edit(self):
         # r = get_one_by_id(model=Role, id=id)
-        r = {"id": 2, "name": "name", "code": "code", "enable": 1, "sort": 100, "details": "ffff"}
-        return self.render_template('admin/role/edit.html', role=r)
+        id = xss_escape(self.get_argument('id', ''))
+        entity = session.query(Role).filter_by(id=id).first()
+        if not entity:
+            raise tornado.web.HTTPError(404)
+        entity_dict = object_to_dict(entity)
+        # entity_dict = {"id": 2, "name": "name", "code": "code", "enable": 1, "sort": 100, "details": "ffff"}
+        return self.render_template('admin/role/edit.html', role=entity_dict)
 
     # 更新角色
     # @admin_role.put('/update')

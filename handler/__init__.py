@@ -4,13 +4,11 @@
 
 from __future__ import absolute_import
 
+import traceback
+
+import tornado
+
 from .BaseHandler import BaseHandler
-
-
-class My404(BaseHandler):
-    def get(self):
-        self.render('errors/404')
-
 
 from .AuthHandler import AuthHandler
 from .DeptHandler import DeptHandler

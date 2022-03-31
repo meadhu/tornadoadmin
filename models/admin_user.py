@@ -3,7 +3,7 @@ from hashlib import md5
 from sqlalchemy import Column, Integer, String, DateTime,Boolean
 from sqlalchemy.orm import relationship, backref
 
-from common.DbHelper import BaseModel
+from common import BaseModel
 
 
 class User(BaseModel):

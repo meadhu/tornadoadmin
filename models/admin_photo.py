@@ -1,12 +1,15 @@
 import datetime
-from applications.extensions import db
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, Text, CHAR
+from sqlalchemy.orm import relationship, backref
+
+from common import BaseModel
 
 
-class Photo(db.Model):
+class Photo(BaseModel):
     __tablename__ = 'admin_photo'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), nullable=False)
-    href = db.Column(db.String(255))
-    mime = db.Column(db.CHAR(50), nullable=False)
-    size = db.Column(db.CHAR(30), nullable=False)
-    create_time = db.Column(db.DateTime, default=datetime.datetime.now)
+    id = Column(Integer, primary_key=True)
+    name = Column(String(255), nullable=False)
+    href = Column(String(255))
+    mime = Column(CHAR(50), nullable=False)
+    size = Column(CHAR(30), nullable=False)
+    create_time = Column(DateTime, default=datetime.datetime.now)

@@ -56,7 +56,8 @@ def main():
         (r"/admin/user/([^/]+)", UserHandler),  #
     ]
     tornado.options.parse_command_line()
-    http_server = tornado.httpserver.HTTPServer(Application(router, My404, debug=(options.env == 'dev')))
+    # http_server = tornado.httpserver.HTTPServer(Application(router, default_handler_class=CustomExceptionHandler, debug=(options.env == 'dev')))
+    http_server = tornado.httpserver.HTTPServer(Application(router, debug=(options.env == 'dev')))
     http_server.listen(options.port)
     tornado.ioloop.IOLoop.current().start()
 
