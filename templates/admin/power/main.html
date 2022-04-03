@@ -59,18 +59,6 @@
     {% end %}
 </script>
 
-<script type="text/html" id="power-type">
-    <!--- TODO: 这里需要补判断 -->
-    <span>目录</span>
-    <span>菜单</span>
-    <span>按钮</span>
-</script>
-
-<script type="text/html" id="power-enable">
-    <input type="checkbox" name="enable" value="" lay-skin="switch" lay-text="启用|禁用"
-           lay-filter="power-enable">
-</script>
-
 <script type="text/html" id="icon">
     <!-- TODO: 加icon class -->
     <i class="layui-icon"></i>
@@ -107,9 +95,27 @@
               { type: 'checkbox' },
             {% end %}
             { field: 'powerName', minWidth: 200, title: '权限名称' },
-            { field: 'icon', title: '图标', templet: '#icon' },
-            { field: 'powerType', title: '权限类型', templet: '#power-type' },
-            { field: 'enable', title: '是否可用', templet: '#power-enable' },
+            { field: 'icon', title: '图标', templet: function(d) {
+                return '<i class="layui-icon '+d.icon+'"></i>';
+            } },
+            { field: 'powerType', title: '权限类型', templet: function(d) {
+                res = "";
+                if (d.powerType == '0') {
+                  res = "<span>目录</span>";
+                }else if (d.powerType == '1') {
+                  res = "<span>菜单</span>";
+                }else if (d.powerType == '2') {
+                  res = "<span>按钮</span>";
+                }
+                return res;
+            } },
+            { field: 'enable', title: '是否可用', templet: function(d){
+               res = '<input type="checkbox" name="enable" value="'+d.id+'" lay-skin="switch" lay-text="启用|禁用" lay-filter="power-enable">';
+               if (d.enable == 1) {
+                 res = '<input type="checkbox" name="enable" value="'+d.id+'" lay-skin="switch" lay-text="启用|禁用" lay-filter="power-enable" checked>';
+               }
+               return res;
+            } },
             { field: 'sort', title: '排序' },
             { title: '操作', templet: '#power-bar', width: 150, align: 'center' }
           ]
@@ -178,7 +184,7 @@
         data: JSON.stringify({ powerId: this.value }),
         dataType: 'json',
         contentType: 'application/json',
-        type: 'put',
+        type: 'post',
         success: function (result) {
           layer.close(loading)
           if (result.success) {

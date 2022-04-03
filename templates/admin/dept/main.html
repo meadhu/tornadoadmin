@@ -60,11 +60,6 @@
     {% end %}
 </script>
 
-<script type="text/html" id="dept-status">
-    <input type="checkbox" name="status" value="" lay-skin="switch" lay-text="启用|禁用"
-           lay-filter="dept-enable">
-</script>
-
 </body>
 
 {% include '../common/footer.html' %}
@@ -100,7 +95,13 @@
             { field: 'phone', title: '联系方式' },
             { field: 'email', title: '邮箱' },
             { field: 'address', title: '详细地址' },
-            { field: 'status', title: '状态', templet: '#dept-status' },
+            { field: 'enable', title: '状态', templet: function(d){
+               res = '<input type="checkbox" name="enable" value="'+d.id+'" lay-skin="switch" lay-text="启用|禁用" lay-filter="dept-enable">';
+               if (d.enable == 1) {
+                 res = '<input type="checkbox" name="enable" value="'+d.id+'" lay-skin="switch" lay-text="启用|禁用" lay-filter="dept-enable" checked>';
+               }
+               return res;
+            } },
             { field: 'sort', title: '排序', width: 100 },
             { title: '操作', templet: '#dept-bar', width: 120, align: 'center' }
           ]
@@ -154,6 +155,9 @@
       } else if (obj.event === 'batchRemove') {
         {#window.batchRemove(obj)#}
         console.log(table.checkStatus(obj.config.id).data)
+        // TODO: 没有实现
+        layer.msg('批量删除数据，未实现', { icon: 5 })
+        return false;
       }
     })
 

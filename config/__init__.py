@@ -13,6 +13,9 @@ config_params = {
     "default_page_size": '10',
 }
 
+#
+SYSTEM_NAME = "tornadoadmin后台"
+
 # 文件上传目录
 UPLOADED_PHOTOS_DEST = 'static/upload'
 UPLOADED_FILES_ALLOW = ['gif', 'jpg']

@@ -15,7 +15,7 @@ from tornado.escape import xhtml_escape as xss_escape
 from common import session
 from common.DbHelper import object_to_dict
 from common.HttpHelper import authorize
-from models.admin_role import Role
+from models import Role, Power
 from . import BaseHandler
 
 
@@ -98,45 +98,46 @@ class RoleHandler(BaseHandler):
     # @admin_role.get('/getRolePower/<int:id>')
     @authorize("admin:role:main", log=True)
     def get_role_power(self):
+        # path = "static/admin/admin/data/power.json"
+        # with open(path, 'r') as load_f:
+        #     data = json.loads(load_f.read())
+        #     return self.jsonify(data)
+
         id = self.get_argument('id', '')
         role = session.query(Role).filter_by(id=id).first()
         check_powers = role.power
-        print(check_powers)
-        # check_powers_list = []
-        # for cp in check_powers:
-        #     check_powers_list.append(cp.id)
-        # powers = Power.query.all()
-        # power_schema = PowerOutSchema2(many=True)  # 用已继承ma.ModelSchema类的自定制类生成序列化类
-        # output = power_schema.dump(powers)  # 生成可序列化对象
-        # for i in output:
-        #     if int(i.get("powerId")) in check_powers_list:
-        #         i["checkArr"] = "1"
-        #     else:
-        #         i["checkArr"] = "0"
-        # res = {
-        #     "data": output,
-        #     "status": {"code": 200, "message": "默认"}
-        # }
-        # return jsonify(res)
-        path = "static/admin/admin/data/power.json"
-        with open(path, 'r') as load_f:
-            data = json.loads(load_f.read())
-            self.jsonify(data)
+        check_powers_list = []
+        for cp in check_powers:
+            check_powers_list.append(cp.id)
+        powers = session.query(Power).all()
+        output = [object_to_dict(i) for i in powers]
+        for i in output:
+            i['openType'] = i['open_type']
+            i['parentId'] = i['parent_id']
+            i['powerId'] = i['id']
+            i['powerName'] = i['name']
+            i['powerType'] = i['type']
+            i['powerUrl'] = i['url']
+            i["checkArr"] = "1" if int(i.get("powerId")) in check_powers_list else "0"
+        res = {
+            "data": output,
+            "status": {"code": 200, "message": "默认"}
+        }
+        return self.jsonify(res)
 
     # 保存角色权限
     # @admin_role.put('/saveRolePower')
     @authorize("admin:role:edit", log=True)
     def save_role_power(self):
-        # req_form = request.form
-        # power_ids = req_form.get("powerIds")
-        # power_list = power_ids.split(',')
-        # role_id = req_form.get("roleId")
-        # role = Role.query.filter_by(id=role_id).first()
-        #
-        # powers = Power.query.filter(Power.id.in_(power_list)).all()
-        # role.power = powers
-        #
-        # db.session.commit()
+        power_ids = self.get_argument("powerIds")
+        power_list = power_ids.split(',')
+        role_id = self.get_argument("roleId")
+        role = session.query(Role).filter_by(id=role_id).first()
+
+        powers = session.query(Power).filter(Power.id.in_(power_list)).all()
+        role.power = powers
+
+        session.commit()
         return self.success_api(msg="授权成功")
 
     # 角色编辑
@@ -205,10 +206,14 @@ class RoleHandler(BaseHandler):
         id = self.get_argument('id', '')
         if not id:
             return self.fail_api("参数异常!")
-        # TODO: 删除该角色的权限和用户
-        r = session.query(Role).filter_by(id=id).delete()
+
+        role = session.query(Role).filter_by(id=id).first()
+        # 删除该角色的权限和用户
+        role.power = []
+        role.user = []
+        res = session.query(Role).filter_by(id=id).delete()
         session.commit()
-        if not r:
+        if not res:
             return self.fail_api("角色删除失败")
         return self.success_api(msg="角色删除成功")
 

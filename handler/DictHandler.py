@@ -60,7 +60,6 @@ class DictHandler(BaseHandler):
     @authorize("admin:dict:add", log=True)
     def dict_type_save(self):
         req_json = json_decode(self.request.body)
-        print(req_json)
         description = xss_escape(req_json.get("description"))
         enable = xss_escape(req_json.get("enable"))
         type_code = xss_escape(req_json.get("typeCode"))

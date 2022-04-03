@@ -15,7 +15,7 @@ class Dept(BaseModel):
     leader = Column(String(50), comment="负责人")
     phone = Column(String(20), comment="联系方式")
     email = Column(String(50), comment="邮箱")
-    status = Column(Integer, comment='状态(1开启,0关闭)')
+    enable = Column(Integer, comment='状态(1开启,0关闭)')
     remark = Column(Text, comment="备注")
     address = Column(String(255), comment="详细地址")
     create_at = Column(DateTime, default=datetime.datetime.now, comment='创建时间')

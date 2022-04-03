@@ -5,11 +5,18 @@
 from __future__ import absolute_import
 
 import json
+import traceback
+
+import tornado
+from sqlalchemy import and_
+from sqlalchemy_pagination import paginate
+from tornado.escape import json_decode
+from tornado.escape import xhtml_escape as xss_escape
 
 from common import session
 from common.DbHelper import object_to_dict
 from common.HttpHelper import authorize
-from models.admin_dept import Dept
+from models import Dept, User
 from . import BaseHandler
 
 
@@ -22,20 +29,26 @@ class DeptHandler(BaseHandler):
     # @dept_bp.post('/data')
     @authorize("admin:dept:main", log=True)
     def data(self):
-        # result = session.query(Dept).first().dept_name  # 查找第一个
-        # result = session.query(Dept).first()
-        # print(object_to_dict(result))
-        result = session.query(Dept).order_by(Dept.id).all()  # 查找第一个
-        data = [object_to_dict(i) for i in result]
-        res = {
-            "data": data
-        }
-        return self.jsonify(res)
-
         # path = "static/admin/admin/data/dept.json"
         # with open(path, 'r') as load_f:
         #     data = json.loads(load_f.read())
         #     self.jsonify(data)
+        # 获取请求参数
+        page = xss_escape(self.get_argument('page', self.settings['config']['default_page'].encode()))
+        page_size = xss_escape(self.get_argument('limit', self.settings['config']['default_page_size'].encode()))
+        dept_name = xss_escape(self.get_argument('deptName', ''))
+        query = session.query(Dept)
+        rule_list = []
+        if dept_name:
+            rule_list.append(Dept.dept_name.like("".join(["%", dept_name, "%"])))
+        query = query.filter(and_(*rule_list))
+        page_result = paginate(query=query, page=int(page), page_size=int(page_size))
+        result = page_result.items
+        data = [object_to_dict(i) for i in result]
+        for item in data:
+            item['deptId'] = item['id']
+            item['deptName'] = item['dept_name']
+        return self.table_api(data=data, count=page_result.total)
 
     # @dept_bp.get('/add')
     @authorize("admin:dept:add", log=True)
@@ -45,114 +58,122 @@ class DeptHandler(BaseHandler):
     # @dept_bp.get('/tree')
     @authorize("admin:dept:main", log=True)
     def tree(self):
-        # dept = Dept.query.order_by(Dept.sort).all()
-        # power_data = curd.model_to_dicts(schema=DeptOutSchema, data=dept)
-        # res = {
-        #     "status": {"code": 200, "message": "默认"},
-        #     "data": power_data
-        #
-        # }
-        # return jsonify(res)
-        path = "static/admin/admin/data/deptTree.json"
-        with open(path, 'r') as load_f:
-            data = json.loads(load_f.read())
-            # res = {
-            #     "status": {"code": 200, "message": "默认"},
-            #     "data": data['data']
-            # }
-            return self.jsonify(data)
+        # path = "static/admin/admin/data/deptTree.json"
+        # with open(path, 'r') as load_f:
+        #     data = json.loads(load_f.read())
+        #     return self.jsonify(data)
+        result = session.query(Dept).order_by(Dept.sort).all()
+        data = []
+        for item in result:
+            data.append({
+                "deptId": item.id,
+                "deptName": item.dept_name,
+                "parentId": item.parent_id,
+                "parentName": '',
+            })
+        res = {
+            "status": {"code": 200, "message": "默认"},
+            "data": data
+        }
+        return self.jsonify(res)
 
-
+    # 保存数据
     # @dept_bp.post('/save')
     # @authorize("admin:dept:add", log=True)
     # @use_args(DeptInSchema(), location="json", unknown=True)
     def save(self):
-        # 插入单条数据
-
-        args = self.request
+        req_json = json_decode(self.request.body)
+        # print(req_json)
+        parent_id = xss_escape(req_json.get('parentId', ''))
+        dept_name = xss_escape(req_json.get('dept_name', ''))
+        sort = xss_escape(req_json.get('sort', ''))
+        leader = xss_escape(req_json.get('leader', ''))
+        phone = xss_escape(req_json.get('phone', ''))
+        email = xss_escape(req_json.get('email', ''))
+        enable = xss_escape(req_json.get('enable', ''))
+        address = xss_escape(req_json.get('address', ''))
         dept = Dept(
-            parent_id=args.get('parent_id'),
-            dept_name=args['dept_name'],
-            sort=args['sort'],
-            leader=args['leader'],
-            phone=args['phone'],
-            email=args['email'],
-            status=args['status'],
-            address=args['address']
+            parent_id=parent_id,
+            dept_name=dept_name,
+            sort=sort,
+            leader=leader,
+            phone=phone,
+            email=email,
+            enable=enable,
+            address=address
         )
-        # 只添加，还没有提交，如果出错还可以撤回(rollback)
-        session.add(dept)
-        # 提交到数据库
-        session.commit()
-        return self.success_api(msg="成功")
+        try:
+            # 只添加，还没有提交，如果出错还可以撤回(rollback)
+            session.add(dept)
+            # 提交到数据库
+            session.commit()
+        except Exception as e:
+            session.rollback()
+            print(traceback.format_exc())
+            return self.fail_api()
+        return self.success_api(msg="保存成功")
 
     # @dept_bp.get('/edit')
     @authorize("admin:dept:edit", log=True)
     def edit(self):
-        # _id = request.args.get("deptId")
-        # dept = curd.get_one_by_id(model=Dept,id=_id)
-        dept = {}
+        _id = self.get_argument('deptId', '')
+        dept_model = session.query(Dept).filter_by(id=_id).first()
+        dept = object_to_dict(dept_model)
         return self.render_template('admin/dept/edit.html', dept=dept)
 
     # 启用
     # @dept_bp.put('/enable')
     @authorize("admin:dept:edit", log=True)
     def enable(self):
-        # id = request.json.get('deptId')
-        # if id:
-        #     enable = 1
-        #     d = Dept.query.filter_by(id=id).update({"status": enable})
-        #     if d:
-        #         db.session.commit()
-        #         return success_api(msg="启用成功")
-        #     return fail_api(msg="出错啦")
-        return self.fail_api(msg="数据错误")
+        req_json = json_decode(self.request.body)
+        _id = req_json.get('deptId', '')
+        if not _id:
+            return self.fail_api(msg="数据错误")
+        res = session.query(Dept).filter_by(id=_id).update({"enable": 1})
+        if res:
+            return self.success_api(msg="启用成功")
+        return self.fail_api(msg="出错啦")
 
     # 禁用
     # @dept_bp.put('/disable')
     @authorize("admin:dept:edit", log=True)
-    def dis_enable(self):
-        # id = request.json.get('deptId')
-        # if id:
-        #     enable = 0
-        #     d = Dept.query.filter_by(id=id).update({"status": enable})
-        #     if d:
-        #         db.session.commit()
-        #         return success_api(msg="禁用成功")
-        #     return fail_api(msg="出错啦")
-        return self.fail_api(msg="数据错误")
+    def disable(self):
+        req_json = json_decode(self.request.body)
+        _id = req_json.get("deptId", "")
+        if not _id:
+            return self.fail_api(msg="数据错误")
+        res = session.query(Dept).filter_by(id=_id).update({"enable": 0})
+        if res:
+            return self.success_api(msg="禁用成功")
+        return self.fail_api(msg="出错啦")
 
     # @dept_bp.put('/update')
     @authorize("admin:dept:edit", log=True)
     def update(self):
-        # json = request.json
-        # validate.check_data(DeptSchema(unknown=INCLUDE), json)
-        # id = json.get("deptId"),
-        # data = {
-        #     "dept_name": validate.xss_escape(json.get("deptName")),
-        #     "sort": validate.xss_escape(json.get("sort")),
-        #     "leader": validate.xss_escape(json.get("leader")),
-        #     "phone": validate.xss_escape(json.get("phone")),
-        #     "email": validate.xss_escape(json.get("email")),
-        #     "status": validate.xss_escape(json.get("status")),
-        #     "address": validate.xss_escape(json.get("address"))
-        # }
-        # d = Dept.query.filter_by(id=id).update(data)
-        # if not d:
-        #     return fail_api(msg="更新失败")
-        # db.session.commit()
+        req_json = json_decode(self.request.body)
+        id = req_json.get("deptId", "")
+        data = {
+            "dept_name": xss_escape(req_json.get("deptName", "")),
+            "sort": xss_escape(req_json.get("sort", "")),
+            "leader": xss_escape(req_json.get("leader", "")),
+            "phone": xss_escape(req_json.get("phone", "")),
+            "email": xss_escape(req_json.get("email", "")),
+            "enable": xss_escape(req_json.get("enable", "")),
+            "address": xss_escape(req_json.get("address", ""))
+        }
+        res = session.query(Dept).filter_by(id=id).update(data)
+        if not res:
+            return self.fail_api(msg="更新失败")
         return self.success_api(msg="更新成功")
 
     # @dept_bp.delete('/remove/<int:_id>')
     @authorize("admin:dept:remove", log=True)
     def remove(self):
-        # d = Dept.query.filter_by(id=_id).delete()
-        # if not d:
-        #     return fail_api(msg="删除失败")
-        # res = User.query.filter_by(dept_id=_id).update({"dept_id": None})
-        # db.session.commit()
-        # if res:
-        #     return success_api(msg="删除成功")
-        # else:
-        #     return fail_api(msg="删除失败")
+        _id = self.get_argument("deptId", "")
+        if not _id:
+            return self.fail_api("数据错误!")
+        res = session.query(Dept).filter_by(id=_id).delete()
+        if not res:
+            return self.fail_api(msg="删除失败1")
+        session.query(User).filter_by(dept_id=_id).update({"dept_id": ''})
         return self.success_api(msg="删除成功")
