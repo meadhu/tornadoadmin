@@ -1,0 +1,24 @@
+version: "3"
+services:
+  web:
+    build: .
+    container_name: "tornadoadmin-web"
+#    restart: always
+    volumes: # 挂载数据卷
+      - .:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - "mysql"
+  mysql: # 添加 mysql 服务
+    container_name: "tornadoadmin-mysql"
+    image: mysql:5.7
+#    restart: always
+    volumes: # 挂载数据卷
+      - ./docker_data/mysql:/var/lib/mysql
+    environment:
+      - TZ=Asia/Shanghai # 设置时区
+      - MYSQL_ROOT_PASSWORD=root # 设置 root 用户密码
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --innodb_use_native_aio=0 # 设置编码
+networks:
+  webnet:
