@@ -116,3 +116,6 @@ dmypy.json
 
 #ide
 .idea/
+
+env
+docker_data
