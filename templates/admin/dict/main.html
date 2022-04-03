@@ -73,10 +73,6 @@
         <i class="layui-icon layui-icon-add-1"></i>
         新增
     </button>
-    <button class="pear-btn pear-btn-md" lay-event="batchRemove">
-        <i class="layui-icon layui-icon-delete"></i>
-        删除
-    </button>
 </script>
 
 <script type="text/html" id="dict-type-bar">
@@ -91,18 +87,10 @@
     </button>
 </script>
 
-<script type="text/html" id="dict-type-enable">
-    <input type="checkbox" value="" lay-skin="switch" lay-text="启用|禁用" lay-filter="dict-type-enable">
-</script>
-
 <script type="text/html" id="dict-data-toolbar">
     <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
         <i class="layui-icon layui-icon-add-1"></i>
         新增
-    </button>
-    <button class="pear-btn pear-btn-md" lay-event="batchRemove">
-        <i class="layui-icon layui-icon-delete"></i>
-        删除
     </button>
 </script>
 
@@ -113,10 +101,6 @@
     </button>
 </script>
 
-<script type="text/html" id="dict-data-enable">
-    <input type="checkbox" value="" lay-skin="switch" lay-text="启用|禁用"
-           lay-filter="dict-data-enable">
-</script>
 {% include '../common/footer.html' %}
 <script>
   layui.use(['table', 'form', 'jquery', 'popup'], function () {
@@ -133,7 +117,13 @@
         { type: 'checkbox' },
         { title: '字典名称', field: 'typeName', align: 'center', width: 120 },
         { title: '描述', field: 'description', align: 'center' },
-        { title: '字典状态', field: 'enable', align: 'center', templet: '#dict-type-enable' },
+        { title: '字典状态', field: 'enable', align: 'center', templet: function(d){
+           res = '<input type="checkbox" name="enable" value="'+d.id+'" lay-skin="switch" lay-text="启用|禁用" lay-filter="dict-type-enable">';
+           if (d.enable == 1) {
+             res = '<input type="checkbox" name="enable" value="'+d.id+'" lay-skin="switch" lay-text="启用|禁用" lay-filter="dict-type-enable" checked>';
+           }
+           return res;
+        } },
         { title: '操作', toolbar: '#dict-type-bar', align: 'center', width: 180 }
       ]
     ]
@@ -143,7 +133,13 @@
         { type: 'checkbox' },
         { title: '标签', field: 'dataLabel', align: 'center', width: 120 },
         { title: '对应值', field: 'dataValue', align: 'center' },
-        { title: '状态', field: 'enable', align: 'center', templet: '#dict-data-enable' },
+        { title: '状态', field: 'enable', align: 'center', templet: function(d){
+           res = '<input type="checkbox" name="enable" value="'+d.id+'" lay-skin="switch" lay-text="启用|禁用" lay-filter="dict-data-enable">';
+           if (d.enable == 1) {
+             res = '<input type="checkbox" name="enable" value="'+d.id+'" lay-skin="switch" lay-text="启用|禁用" lay-filter="dict-data-enable" checked>';
+           }
+           return res;
+        } },
         { title: '操作', toolbar: '#dict-data-bar', align: 'center', width: 180 }
       ]
     ]
@@ -167,7 +163,7 @@
       $('.empty').hide()
       table.render({
         elem: '#dict-data-table',
-        url: MODULE_PATH+'/dict_data_data?typeCode=' + typeCode,
+        url: MODULE_PATH+'dict_data_data?typeCode=' + typeCode,
         page: true,
         height: 'full-148',
         cols: dataCols,
@@ -212,7 +208,7 @@
         data: JSON.stringify({ id: this.value }),
         dataType: 'json',
         contentType: 'application/json',
-        type: 'put',
+        type: 'post',
         success: function (result) {
           layer.close(loading)
           if (result.success) {
@@ -301,7 +297,7 @@
         let loading = layer.load()
         $.ajax({
           url: MODULE_PATH+'dict_data_remove',
-          data: {"id": obj.data['dataId']},
+          data: {"dataId": obj.data['dataId']},
           dataType: 'json',
           type: 'post',
           success: function (result) {
@@ -355,7 +351,7 @@
         data: JSON.stringify({ dataId: this.value }),
         dataType: 'json',
         contentType: 'application/json',
-        type: 'put',
+        type: 'post',
         success: function (result) {
           layer.close(loading)
           if (result.success) {

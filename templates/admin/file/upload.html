@@ -41,13 +41,12 @@
         var form = layui.form;
         var upload = layui.upload;
 
-        let MODULE_PATH = '/admin/photo/'
+        let MODULE_PATH = '/admin/file/'
 
         //选完文件后不自动上传
         upload.render({
             elem: '#logo-img',
-            //url: "{{ url_for('adminFile.upload_api') }}",
-            url: MODULE_PATH+"upload_api",
+            url: MODULE_PATH+"uploadapi",
             auto: false,
             exts: 'jpg|png|gif|bmp|jpeg',
             size: 1000,

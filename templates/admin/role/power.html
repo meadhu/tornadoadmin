@@ -61,7 +61,7 @@
         url: MODULE_PATH+'save_role_power',
         data: data.field,
         dataType: 'json',
-        type: 'put',
+        type: 'post',
         success: function (result) {
           if (result.success) {
             layer.msg(result.msg, { icon: 1, time: 1000 }, function () {

@@ -7,6 +7,8 @@ import json
 import traceback
 
 import tornado
+from sqlalchemy import and_
+from sqlalchemy_pagination import paginate
 from tornado.escape import json_decode
 from tornado.escape import xhtml_escape as xss_escape
 
@@ -29,39 +31,36 @@ class RoleHandler(BaseHandler):
     # @admin_role.get('/data')
     @authorize("admin:role:main", log=True)
     def data(self):
-        # 获取请求参数
-        role_name = self.get_argument('roleName', '')
-        role_code = self.get_argument('roleCode', '')
-        # # 查询参数构造
-        # mf = ModelFilter()
-        # if role_name:
-        #     mf.vague(field_name="name", value=role_name)
-        # if role_code:
-        #     mf.vague(field_name="code", value=role_code)
-        # # orm查询
-        # # 使用分页获取data需要.items
-        # role = Role.query.filter(mf.get_filter(Role)).layui_paginate()
-        # count = role.total
-        # # 返回api
-        # return table_api(data=model_to_dicts(schema=RoleOutSchema, data=role.items), count=count)
-
-        result = session.query(Role).order_by(Role.id).all()  # 查找第一个
-        data = [object_to_dict(i) for i in result]
-        return self.table_api(data=data, count=len(data))
-
         # path = "static/admin/admin/data/role.json"
         # with open(path, 'r') as load_f:
         #     data = json.loads(load_f.read())
-        #     self.jsonify(data)
+        #     return self.jsonify(data)
+        # 获取请求参数
+        page = xss_escape(self.get_argument('page', self.settings['config']['default_page'].encode()))
+        page_size = xss_escape(self.get_argument('limit', self.settings['config']['default_page_size'].encode()))
+        role_name = xss_escape(self.get_argument('roleName', ''))
+        role_code = xss_escape(self.get_argument('roleCode', ''))
+        query = session.query(Role)
+        rule_list = []
+        if role_name:
+            rule_list.append(Role.name.like("".join(["%", role_name, "%"])))
+        if role_code:
+            rule_list.append(Role.code.like("".join(["%", role_code, "%"])))
+        query = query.filter(and_(*rule_list))
+        page_result = paginate(query=query, page=int(page), page_size=int(page_size))
+        result = page_result.items
+        data = [object_to_dict(i) for i in result]
+        for item in data:
+            item['roleName'] = item['name']
+            item['roleCode'] = item['code']
+        return self.table_api(data=data, count=page_result.total)
 
     # 角色增加
-    # @admin_role.get('/add')
     @authorize("admin:role:add", log=True)
     def add(self):
         return self.render_template('admin/role/add.html')
 
     # 角色增加
-    # @admin_role.post('/save')
     @authorize("admin:role:add", log=True)
     def save(self):
         req = json_decode(self.request.body)
@@ -90,7 +89,8 @@ class RoleHandler(BaseHandler):
     # @admin_role.get('/power/<int:_id>')
     @authorize("admin:role:power", log=True)
     def power(self):
-        _id = ""
+        # _id = "2"
+        _id = self.get_argument('id', '')
         return self.render_template('admin/role/power.html', id=_id)
 
 
@@ -98,8 +98,10 @@ class RoleHandler(BaseHandler):
     # @admin_role.get('/getRolePower/<int:id>')
     @authorize("admin:role:main", log=True)
     def get_role_power(self):
-        # role = Role.query.filter_by(id=id).first()
-        # check_powers = role.power
+        id = self.get_argument('id', '')
+        role = session.query(Role).filter_by(id=id).first()
+        check_powers = role.power
+        print(check_powers)
         # check_powers_list = []
         # for cp in check_powers:
         #     check_powers_list.append(cp.id)
@@ -141,7 +143,6 @@ class RoleHandler(BaseHandler):
     # @admin_role.get('/edit/<int:id>')
     @authorize("admin:role:edit", log=True)
     def edit(self):
-        # r = get_one_by_id(model=Role, id=id)
         id = xss_escape(self.get_argument('id', ''))
         entity = session.query(Role).filter_by(id=id).first()
         if not entity:
@@ -154,19 +155,19 @@ class RoleHandler(BaseHandler):
     # @admin_role.put('/update')
     @authorize("admin:role:edit", log=True)
     def update(self):
-        # req_json = request.json
-        # id = req_json.get("roleId")
-        # data = {
-        #     "code": xss_escape(req_json.get("roleCode")),
-        #     "name": xss_escape(req_json.get("roleName")),
-        #     "sort": xss_escape(req_json.get("sort")),
-        #     "enable": xss_escape(req_json.get("enable")),
-        #     "details": xss_escape(req_json.get("details"))
-        # }
-        # role = Role.query.filter_by(id=id).update(data)
-        # db.session.commit()
-        # if not role:
-        #     return fail_api(msg="更新角色失败")
+        req_json = json_decode(self.request.body)
+        id = req_json.get("roleId")
+        data = {
+            "code": xss_escape(req_json.get("roleCode")),
+            "name": xss_escape(req_json.get("roleName")),
+            "sort": xss_escape(req_json.get("sort")),
+            "enable": xss_escape(req_json.get("enable")),
+            "details": xss_escape(req_json.get("details"))
+        }
+        role = session.query(Role).filter_by(id=id).update(data)
+        session.commit()
+        if not role:
+            return self.fail_api(msg="更新角色失败")
         return self.success_api(msg="更新角色成功")
 
 
@@ -174,24 +175,26 @@ class RoleHandler(BaseHandler):
     # @admin_role.put('/enable')
     @authorize("admin:role:edit", log=True)
     def enable(self):
-        # id = request.json.get('roleId')
-        # if id:
-        #     res = enable_status(Role, id)
-        #     if not res:
-        #         return fail_api(msg="出错啦")
-        #     return success_api(msg="启动成功")
+        req_json = json_decode(self.request.body)
+        id = req_json.get('roleId')
+        if id:
+            res = session.query(Role).filter_by(id=id).update({"enable": 1})
+            if not res:
+                return self.fail_api(msg="出错啦")
+            return self.success_api(msg="启动成功")
         return self.fail_api(msg="数据错误")
 
     # 禁用用户
     # @admin_role.put('/disable')
     # @authorize("admin:role:edit", log=True)
-    def dis_enable(self):
-        # _id = request.json.get('roleId')
-        # if _id:
-        #     res = disable_status(Role, _id)
-        #     if not res:
-        #         return fail_api(msg="出错啦")
-        #     return success_api(msg="禁用成功")
+    def disable(self):
+        req_json = json_decode(self.request.body)
+        _id = req_json.get('roleId')
+        if _id:
+            res = session.query(Role).filter_by(id=_id).update({"enable": 0})
+            if not res:
+                return self.fail_api(msg="出错啦")
+            return self.success_api(msg="禁用成功")
         return self.fail_api(msg="数据错误")
 
 
@@ -199,15 +202,14 @@ class RoleHandler(BaseHandler):
     # @admin_role.delete('/remove/<int:id>')
     @authorize("admin:role:remove", log=True)
     def remove(self):
-        # role = Role.query.filter_by(id=id).first()
-        # # 删除该角色的权限和用户
-        # role.power = []
-        # role.user = []
-        #
-        # r = Role.query.filter_by(id=id).delete()
-        # db.session.commit()
-        # if not r:
-        #     return fail_api(msg="角色删除失败")
+        id = self.get_argument('id', '')
+        if not id:
+            return self.fail_api("参数异常!")
+        # TODO: 删除该角色的权限和用户
+        r = session.query(Role).filter_by(id=id).delete()
+        session.commit()
+        if not r:
+            return self.fail_api("角色删除失败")
         return self.success_api(msg="角色删除成功")
 
     # 批量删除
@@ -215,13 +217,9 @@ class RoleHandler(BaseHandler):
     @authorize("admin:role:remove", log=True)
     # @login_required
     def batch_remove(self):
-        # ids = request.form.getlist('ids[]')
-        # for id in ids:
-        #     role = Role.query.filter_by(id=id).first()
-        #     # 删除该角色的权限和用户
-        #     role.power = []
-        #     role.user = []
-        #
-        #     r = Role.query.filter_by(id=id).delete()
-        #     db.session.commit()
+        ids = self.get_arguments('ids[]')
+        # TODO: 删除该角色的权限和用户
+        # 返回受影响的行数
+        effect_row_num = session.query(Role).filter(Role.id.in_(ids)).delete()
+        session.commit()
         return self.success_api(msg="批量删除成功")

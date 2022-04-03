@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>字典增加</title>
-    {% include 'admin/common/header.html' %}
+    {% include '../../common/header.html' %}
 </head>
 <body>
 <form class="layui-form" action="">
@@ -61,15 +61,17 @@
         </div>
     </div>
 </form>
-{% include 'admin/common/footer.html' %}
+{% include '../../common/footer.html' %}
 <script>
   layui.use(['form', 'jquery'], function () {
     let form = layui.form
     let $ = layui.jquery
 
+    let MODULE_PATH = '/admin/dict/'
+
     form.on('submit(dict-data-save)', function (data) {
       $.ajax({
-        url: '/admin/dict/dictData/save',
+        url: MODULE_PATH+'dict_data_save',
         data: JSON.stringify(data.field),
         dataType: 'json',
         contentType: 'application/json',
@@ -88,8 +90,6 @@
       return false
     })
   })
-</script>
-<script>
 </script>
 </body>
 </html>

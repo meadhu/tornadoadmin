@@ -115,7 +115,7 @@
         data: JSON.stringify({ id: this.value }),
         dataType: 'json',
         contentType: 'application/json',
-        type: 'put',
+        type: 'post',
         success: function (result) {
           layer.close(loading)
           if (result.success) {

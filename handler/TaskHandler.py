@@ -5,6 +5,7 @@ from __future__ import absolute_import
 
 import json
 
+from common import scheduler_proj
 from . import BaseHandler
 
 
@@ -23,11 +24,12 @@ class TaskHandler(BaseHandler):
     # 获取
     # @admin_task.route('/data', methods=['GET'])
     def data(self):
-        # jobs = scheduler.get_jobs()
+        # jobs = scheduler_proj.get_jobs()
+        # print(jobs)
         # jobs_list = []
         # for job in jobs:
         #     jobs_list.append(job_to_dict(job))
-        # return table_api(data=jobs_list, count=len(jobs_list))
+        # return self.table_api(data=jobs_list, count=len(jobs_list))
         path = "static/admin/admin/data/taskList.json"
         with open(path, 'r') as load_f:
             data = json.loads(load_f.read())

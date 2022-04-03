@@ -63,7 +63,7 @@
 
     form.on('submit(dict-type-save)', function (data) {
       $.ajax({
-        url: MODULE_PATH+'dict_type/save',
+        url: MODULE_PATH+'dict_type_save',
         data: JSON.stringify(data.field),
         dataType: 'json',
         contentType: 'application/json',

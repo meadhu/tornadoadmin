@@ -79,7 +79,7 @@
 
     dtree.renderSelect({
       elem: '#selectParent',
-      url: MODULE_PATH + 'dept_tree',
+      url: '/admin/dept/tree',
       method: 'get',
       selectInputName: { nodeId: 'deptId', context: 'deptName' },
       skin: 'layui',
@@ -99,7 +99,7 @@
         data: JSON.stringify(data.field),
         dataType: 'json',
         contentType: 'application/json',
-        type: 'put',
+        type: 'post',
         success: function (result) {
           if (result.success) {
             layer.msg(result.msg, { icon: 1, time: 1000 }, function () {

@@ -46,14 +46,14 @@ def main():
         (r"/admin/home/([^/]+)", HomeHandler),  #
         (r"/auth/([^/]+)", AuthHandler),  # 登录相关
         (r"/admin/dict/([^/]+)", DictHandler),  #
-        (r"/admin/dept/([^/]+)", DeptHandler),  #
-        (r"/admin/file/([^/]+)", FileHandler),  #
-        (r"/admin/log/([^/]+)", LogHandler),  #
+        (r"/admin/dept/([^/]+)", DeptHandler),  # 部门管理
+        (r"/admin/file/([^/]+)", FileHandler),  # 文件管理
+        (r"/admin/log/([^/]+)", LogHandler),  # 日志管理
         (r"/admin/monitor/([^/]+)", MonitorHandler),  # 监控管理
-        (r"/admin/power/([^/]+)", PowerHandler),  #
-        (r"/admin/role/([^/]+)", RoleHandler),  #
-        (r"/admin/task/([^/]+)", TaskHandler),  #
-        (r"/admin/user/([^/]+)", UserHandler),  #
+        (r"/admin/power/([^/]+)", PowerHandler),  # 权限管理
+        (r"/admin/role/([^/]+)", RoleHandler),  # 角色管理
+        (r"/admin/task/([^/]+)", TaskHandler),  # 任务管理
+        (r"/admin/user/([^/]+)", UserHandler),  # 用户管理
     ]
     tornado.options.parse_command_line()
     # http_server = tornado.httpserver.HTTPServer(Application(router, default_handler_class=CustomExceptionHandler, debug=(options.env == 'dev')))

@@ -48,7 +48,7 @@ class BaseHandler(HttpHelper, CustomExceptionHandler):
         # super().get()
         slug = slug if slug else "main"
         if not hasattr(self, slug):
-            #return self.render("errors/404")
+            # return self.render("errors/404")
             raise tornado.web.HTTPError(404)
         # print("slug: %s", slug)
         eval("self." + slug + "()")

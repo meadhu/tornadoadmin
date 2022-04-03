@@ -68,10 +68,6 @@
     {% end %}
 </script>
 
-<script type="text/html" id="role-enable">
-    <input type="checkbox" name="enable" value="" lay-skin="switch" lay-text="启用|禁用"
-           lay-filter="role-enable">
-</script>
 {% include '../common/footer.html' %}
 <script>
   layui.use(['table', 'form', 'jquery', 'popup', 'common'], function () {
@@ -87,10 +83,16 @@
         {% if authorize("admin:role:remove") %}
           { type: 'checkbox' },
         {% end %}
-        { title: '角色名', field: 'name', align: 'center', width: 100 },
-        { title: 'Key值', field: 'code', align: 'center' },
+        { title: '角色名', field: 'roleName', align: 'center', width: 100 },
+        { title: 'Key值', field: 'roleCode', align: 'center' },
         { title: '描述', field: 'details', align: 'center' },
-        { title: '是否可用', field: 'enable', align: 'center', templet: '#role-enable' },
+        { title: '是否可用', field: 'enable', align: 'center', templet: function(d){
+           res = '<input type="checkbox" name="enable" value="'+d.id+'" lay-skin="switch" lay-text="启用|禁用" lay-filter="role-enable">';
+           if (d.enable == 1) {
+             res = '<input type="checkbox" name="enable" value="'+d.id+'" lay-skin="switch" lay-text="启用|禁用" lay-filter="role-enable" checked>';
+           }
+           return res;
+        } },
         { title: '排序', field: 'sort', align: 'center' },
         { title: '操作', toolbar: '#role-bar', align: 'center', width: 195 }
       ]
@@ -147,7 +149,7 @@
         data: JSON.stringify({ roleId: this.value }),
         dataType: 'json',
         contentType: 'application/json',
-        type: 'put',
+        type: 'post',
         success: function (result) {
           layer.close(loading)
           if (result.success) {
@@ -241,7 +243,7 @@
           url: MODULE_PATH + 'batch_remove',
           data: { ids: ids },
           dataType: 'json',
-          type: 'delete',
+          type: 'post',
           success: function (result) {
             layer.close(loading)
             if (result.success) {

@@ -73,11 +73,11 @@
 
     form.on('submit(dict-type-update)', function (data) {
       $.ajax({
-        url: MODULE_PATH+'dict_type/update',
+        url: MODULE_PATH+'dict_type_update',
         data: JSON.stringify(data.field),
         dataType: 'json',
         contentType: 'application/json',
-        type: 'put',
+        type: 'post',
         success: function (result) {
           if (result.success) {
             layer.msg(result.msg, { icon: 1, time: 1000 }, function () {

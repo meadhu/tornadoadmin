@@ -90,14 +90,6 @@
            lay-filter="user-enable"/>
 </script>
 
-{# 用户注册时间 #}
-<script type="text/html" id="user-createTime">
-</script>
-
-{# 用户更新时间 #}
-<script type="text/html" id="user-updateTime">
-</script>
-
 {% include '../common/footer.html' %}
 
 <script>
@@ -121,8 +113,8 @@
         { title: '账号', field: 'username', align: 'center' },
         { title: '部门', field: 'dept', align: 'center' },
         { title: '启用', field: 'enable', align: 'center', templet: '#user-enable', width: 120 },
-        { title: '注册时间', field: 'create_at', templet: '#user-createTime', align: 'center' },
-        { title: '更新时间', field: 'update_at', templet: '#user-updateTime', align: 'center' },
+        { title: '注册时间', field: 'create_at', align: 'center' },
+        { title: '更新时间', field: 'update_at', align: 'center' },
         { title: '操作', toolbar: '#user-bar', align: 'center', width: 130 }
       ]
     ]
@@ -144,7 +136,7 @@
     dtree.render({
       elem: '#dept-tree',
       method: 'get',
-      url: '/dept/tree',
+      url: '/admin/dept/tree',
       dataFormat: 'list',
       line: true,
       skin: 'laySimple',
@@ -219,7 +211,7 @@
         data: JSON.stringify({ userId: this.value }),
         dataType: 'json',
         contentType: 'application/json',
-        type: 'put',
+        type: 'post',
         success: function (result) {
           layer.close(loading)
           if (result.success) {
@@ -247,7 +239,7 @@
         title: '修改',
         shade: 0.1,
         area: ['550px', '500px'],
-        content: MODULE_PATH + 'edit/' + obj.data['id']
+        content: MODULE_PATH + 'edit?id=' + obj.data['id']
       })
     }
 
@@ -256,9 +248,10 @@
         layer.close(index)
         let loading = layer.load()
         $.ajax({
-          url: MODULE_PATH + 'remove/' + obj.data['id'],
+          url: MODULE_PATH + 'remove',
+          data: {"id": obj.data['id']},
           dataType: 'json',
-          type: 'delete',
+          type: 'post',
           success: function (result) {
             layer.close(loading)
             if (result.success) {
@@ -302,7 +295,7 @@
           url: MODULE_PATH + 'batchRemove',
           data: { ids: ids },
           dataType: 'json',
-          type: 'delete',
+          type: 'post',
           success: function (result) {
             layer.close(loading)
             if (result.success) {

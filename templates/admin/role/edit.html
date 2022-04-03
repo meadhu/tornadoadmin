@@ -32,9 +32,9 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">状态</label>
                     <div class="layui-input-block">
-                        <input type="radio" name="enable" {% if role['enable'] == 1 %}checked {% end %}value="0"
+                        <input type="radio" name="enable" {% if role['enable'] == 1 %}checked {% end %}value="1"
                                title="开启">
-                        <input type="radio" name="enable" {% if role['enable'] == 0 %}checked {% end %} value="1"
+                        <input type="radio" name="enable" {% if role['enable'] == 0 %}checked {% end %} value="0"
                                title="关闭">
                     </div>
                 </div>
@@ -84,7 +84,7 @@
         data: JSON.stringify(data.field),
         dataType: 'json',
         contentType: 'application/json',
-        type: 'put',
+        type: 'post',
         success: function (result) {
           if (result.success) {
             layer.msg(result.msg, { icon: 1, time: 1000 }, function () {

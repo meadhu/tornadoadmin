@@ -1,6 +1,7 @@
 import datetime
+import hashlib
 from hashlib import md5
-from sqlalchemy import Column, Integer, String, DateTime,Boolean
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
 from sqlalchemy.orm import relationship, backref
 
 from common import BaseModel
@@ -15,14 +16,15 @@ class User(BaseModel):
     remark = Column(String(255), comment='备注')
     password_hash = Column(String(128), comment='哈希密码')
     enable = Column(Integer, default=0, comment='启用')
-    dept_id = Column(Integer, comment='部门id')
+    dept_id = Column(Integer, ForeignKey('admin_dept.id'), comment='部门id')
     create_at = Column(DateTime, default=datetime.datetime.now, comment='创建时间')
     update_at = Column(DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now, comment='创建时间')
     role = relationship('Role', secondary="admin_user_role", backref=backref('user'), lazy='dynamic')
+    dept = relationship("Dept", backref=backref('admin_dept'))
 
     def set_password(self, password):
-        self.password_hash = md5(password)
+        self.password_hash = hashlib.md5(password).hexdigest()
 
     def validate_password(self, password):
         # return check_password_hash(self.password_hash, password)
-        return self.password_hash == md5(password)
+        return self.password_hash == hashlib.md5(password).hexdigest()

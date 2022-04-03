@@ -128,3 +128,18 @@ python app.py crud <表名>
 ```
 
 #### 预览项目
+
+
+```shell
+# 分页代码  https://github.com/wizeline/sqlalchemy-pagination
+from sqlalchemy_pagination import paginate
+page = paginate(session.query(User), 1, 25)
+# The pagination objects has the following attributes
+#items: The items of the current page base on the query
+#total: Total number of items
+#pages: Total number of pages
+#has_next: Boolean indication wether there are more pages to fetch
+#has_previous: Boolean indicating wether there are previous pages
+#next_page: Next page number or None if the current page is the last one
+#previous_page: Previous page number or None if the current page is the last one
+```

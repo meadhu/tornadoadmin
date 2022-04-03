@@ -260,7 +260,7 @@
           url: MODULE_PATH + 'batch_remove',
           data: { ids: ids },
           dataType: 'json',
-          type: 'delete',
+          type: 'post',
           success: function (result) {
             layer.close(loading)
             if (result.success) {

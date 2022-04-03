@@ -20,3 +20,5 @@ class Dept(BaseModel):
     address = Column(String(255), comment="详细地址")
     create_at = Column(DateTime, default=datetime.datetime.now, comment='创建时间')
     update_at = Column(DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now, comment='创建时间')
+    # user = relationship("User", backref=backref('admin_user'))
+

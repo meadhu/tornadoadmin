@@ -17,4 +17,4 @@ class Role(BaseModel):
     sort = Column(Integer, default=20, comment='排序')
     create_time = Column(DateTime, default=datetime.datetime.now, comment='创建时间')
     update_time = Column(DateTime, default=datetime.datetime.now, onupdate=datetime.datetime.now, comment='更新时间')
-    # power = relationship('Power', secondary="admin_role_power", backref=backref('role'))
+    power = relationship('Power', secondary="admin_role_power", backref=backref('role'))
