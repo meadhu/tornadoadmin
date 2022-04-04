@@ -22,12 +22,12 @@ from . import BaseHandler
 
 class {{class_name}}Handler(BaseHandler):
     # 页面
-    @authorize("admin:{{view_name}}:main", log=True)
+    @authorize("admin:{{view_name}}:main", log=False)
     def main(self):
         return self.render_template('admin/{{view_name}}/main.html')
 
     # 分页数据
-    @authorize("admin:{{view_name}}:main", log=True)
+    @authorize("admin:{{view_name}}:main", log=False)
     def data(self):
         # 获取请求参数
         page = xss_escape(self.get_argument('page', self.settings['config']['default_page'].encode()))
@@ -44,7 +44,7 @@ class {{class_name}}Handler(BaseHandler):
         return self.table_api(data=data, count=page_result.total)
 
     # 增加页面
-    @authorize("admin:{{view_name}}:add", log=True)
+    @authorize("admin:{{view_name}}:add", log=False)
     def add(self):
         return self.render_template('admin/{{view_name}}/add.html')
 
@@ -69,7 +69,7 @@ class {{class_name}}Handler(BaseHandler):
         return self.success_api(msg="保存成功")
 
     # 编辑页面
-    @authorize("admin:{{view_name}}:edit", log=True)
+    @authorize("admin:{{view_name}}:edit", log=False)
     def edit(self):
         _id = self.get_argument('id', '')
         _model = session.query({{class_name}}).filter_by(id=_id).first()

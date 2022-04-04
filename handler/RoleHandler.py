@@ -22,12 +22,12 @@ from . import BaseHandler
 class RoleHandler(BaseHandler):
 
     # 页面
-    @authorize("admin:role:main", log=True)
+    @authorize("admin:role:main", log=False)
     def main(self):
         return self.render_template('admin/role/main.html')
 
     # 分页数据
-    @authorize("admin:role:main", log=True)
+    @authorize("admin:role:main", log=False)
     def data(self):
         # path = "static/admin/admin/data/role.json"
         # with open(path, 'r') as load_f:
@@ -54,7 +54,7 @@ class RoleHandler(BaseHandler):
         return self.table_api(data=data, count=page_result.total)
 
     # 增加页面
-    @authorize("admin:role:add", log=True)
+    @authorize("admin:role:add", log=False)
     def add(self):
         return self.render_template('admin/role/add.html')
 
@@ -83,13 +83,13 @@ class RoleHandler(BaseHandler):
         return self.success_api(msg="成功")
 
     # 角色授权
-    @authorize("admin:role:power", log=True)
+    @authorize("admin:role:power", log=False)
     def power(self):
         _id = self.get_argument('id', '')
         return self.render_template('admin/role/power.html', id=_id)
 
     # 获取角色权限
-    @authorize("admin:role:main", log=True)
+    @authorize("admin:role:main", log=False)
     def get_role_power(self):
         # path = "static/admin/admin/data/power.json"
         # with open(path, 'r') as load_f:
@@ -133,7 +133,7 @@ class RoleHandler(BaseHandler):
         return self.success_api(msg="授权成功")
 
     # 角色编辑
-    @authorize("admin:role:edit", log=True)
+    @authorize("admin:role:edit", log=False)
     def edit(self):
         id = xss_escape(self.get_argument('id', ''))
         entity = session.query(Role).filter_by(id=id).first()

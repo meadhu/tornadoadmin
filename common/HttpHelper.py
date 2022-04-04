@@ -5,6 +5,43 @@ from functools import wraps
 from typing import Dict, Any
 
 import tornado.web
+from tornado.escape import xhtml_escape as xss_escape
+
+from common import session
+from models import AdminLog
+
+
+def login_log(request, uid, is_access):
+    info = {
+        'method': request.method,
+        'url': request.path,
+        'ip': request.remote_ip,
+        'user_agent': xss_escape(request.headers.get('User-Agent')),
+        # 'desc': xss_escape(request.get_argument('username', '')),
+        'uid': uid,
+        'success': int(is_access)
+    }
+    log = AdminLog(**info)
+    session.add(log)
+    session.flush()
+    session.commit()
+    return log.id
+
+
+def admin_log(request, uid, is_access):
+    info = {
+        'method': request.method,
+        'url': request.path,
+        'ip': request.remote_ip,
+        'user_agent': xss_escape(request.headers.get('User-Agent')),
+        'desc': request.body,
+        'uid': uid,
+        'success': int(is_access)
+    }
+    log = AdminLog(**info)
+    session.add(log)
+    session.commit()
+    return log.id
 
 
 def authorize(power: str, log: bool = False):
@@ -12,6 +49,11 @@ def authorize(power: str, log: bool = False):
         @tornado.web.authenticated
         @wraps(func)
         def wrapper(*args, **kwargs):
+            request = args[0].request
+
+            print(request)
+            print(request.body)
+            print(**kwargs)
             # if not power in session.get('permissions'):
             #     if log:
             #         admin_log(request=request, is_access=False)
@@ -19,8 +61,8 @@ def authorize(power: str, log: bool = False):
             #         abort(403)
             #     else:
             #         return jsonify(success=False, msg="权限不足!")
-            # if log:
-            #     admin_log(is_access=True)
+            if log:
+                admin_log(request=request, uid=10, is_access=True)
             return func(*args, **kwargs)
 
         return wrapper

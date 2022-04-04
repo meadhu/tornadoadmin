@@ -22,11 +22,11 @@ from . import BaseHandler
 
 class PowerHandler(BaseHandler):
     # 权限管理
-    @authorize("admin:power:main", log=True)
+    @authorize("admin:power:main", log=False)
     def main(self):
         return self.render_template('admin/power/main.html')
 
-    @authorize("admin:power:main", log=True)
+    @authorize("admin:power:main", log=False)
     def data(self):
         # path = "static/admin/admin/data/power.json"
         # with open(path, 'r') as load_f:
@@ -41,11 +41,11 @@ class PowerHandler(BaseHandler):
             item['parentId'] = item['parent_id']
         return self.jsonify({"data": data})
 
-    @authorize("admin:power:add", log=True)
+    @authorize("admin:power:add", log=False)
     def add(self):
         return self.render_template('admin/power/add.html')
 
-    @authorize("admin:power:main", log=True)
+    @authorize("admin:power:main", log=False)
     def select_parent(self):
         # path = "static/admin/admin/data/powerSelectParent.json"
         # with open(path, 'r') as load_f:
@@ -98,7 +98,7 @@ class PowerHandler(BaseHandler):
         return self.success_api(msg="保存成功")
 
     # 权限编辑
-    @authorize("admin:power:edit", log=True)
+    @authorize("admin:power:edit", log=False)
     def edit(self):
         _id = self.get_argument("powerId", "")
         if not _id:

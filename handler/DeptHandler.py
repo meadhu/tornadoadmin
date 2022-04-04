@@ -21,11 +21,11 @@ from . import BaseHandler
 
 
 class DeptHandler(BaseHandler):
-    @authorize("admin:dept:main", log=True)
+    @authorize("admin:dept:main", log=False)
     def main(self):
         return self.render_template('admin/dept/main.html')
 
-    @authorize("admin:dept:main", log=True)
+    @authorize("admin:dept:main", log=False)
     def data(self):
         # path = "static/admin/admin/data/dept.json"
         # with open(path, 'r') as load_f:
@@ -48,11 +48,11 @@ class DeptHandler(BaseHandler):
             item['deptName'] = item['dept_name']
         return self.table_api(data=data, count=page_result.total)
 
-    @authorize("admin:dept:add", log=True)
+    @authorize("admin:dept:add", log=False)
     def add(self):
         return self.render_template('admin/dept/add.html')
 
-    @authorize("admin:dept:main", log=True)
+    @authorize("admin:dept:main", log=False)
     def tree(self):
         # path = "static/admin/admin/data/deptTree.json"
         # with open(path, 'r') as load_f:
@@ -107,7 +107,7 @@ class DeptHandler(BaseHandler):
             return self.fail_api()
         return self.success_api(msg="保存成功")
 
-    @authorize("admin:dept:edit", log=True)
+    @authorize("admin:dept:edit", log=False)
     def edit(self):
         _id = self.get_argument('deptId', '')
         dept_model = session.query(Dept).filter_by(id=_id).first()

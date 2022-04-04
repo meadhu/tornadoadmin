@@ -22,11 +22,11 @@ from . import BaseHandler
 
 class DictHandler(BaseHandler):
     # 数据字典
-    @authorize("admin:dict:main", log=True)
+    @authorize("admin:dict:main", log=False)
     def main(self):
         return self.render_template('admin/dict/main.html')
 
-    @authorize("admin:dict:main", log=True)
+    @authorize("admin:dict:main", log=False)
     def dict_type_data(self):
         # 获取请求参数
         page = xss_escape(self.get_argument('page', self.settings['config']['default_page'].encode()))
@@ -50,7 +50,7 @@ class DictHandler(BaseHandler):
         #     data = json.loads(load_f.read())
         #     self.jsonify(data)
 
-    @authorize("admin:dict:add", log=True)
+    @authorize("admin:dict:add", log=False)
     def dict_type_add(self):
         return self.render_template('admin/dict/add.html')
 
@@ -69,7 +69,7 @@ class DictHandler(BaseHandler):
         return self.fail_api(msg="增加失败")
 
     #  编辑字典类型
-    @authorize("admin:dict:edit", log=True)
+    @authorize("admin:dict:edit", log=False)
     def dict_type_edit(self):
         _id = self.get_argument('dictTypeId', '')
         dict_type_model = session.query(DictType).filter_by(id=_id).first()
@@ -129,7 +129,7 @@ class DictHandler(BaseHandler):
             return self.fail_api(msg="删除失败")
         return self.success_api(msg="删除成功")
 
-    @authorize("admin:dict:main", log=True)
+    @authorize("admin:dict:main", log=False)
     def dict_data_data(self):
         # type_code = xss_escape(request.args.get('typeCode', type=str))
         # dict_data = DictData.query.filter_by(type_code=type_code).layui_paginate()
@@ -160,7 +160,7 @@ class DictHandler(BaseHandler):
         return self.table_api(data=data, count=page_result.total)
 
     # 增加字典数据
-    @authorize("admin:dict:add", log=True)
+    @authorize("admin:dict:add", log=False)
     def dict_data_add(self):
         type_code = self.get_argument('typeCode', "")
         return self.render_template('admin/dict/data/add.html', type_code=type_code)
@@ -182,7 +182,7 @@ class DictHandler(BaseHandler):
         return self.success_api("增加成功")
 
     # 编辑字典数据
-    @authorize("admin:dict:edit", log=True)
+    @authorize("admin:dict:edit", log=False)
     def dict_data_edit(self):
         _id = self.get_argument("dataId", "")
         if not _id:

@@ -12,12 +12,12 @@ from . import BaseHandler
 
 class TaskHandler(BaseHandler):
     # 任务管理
-    @authorize("admin:task:remove", log=True)
+    @authorize("admin:task:remove", log=False)
     def main(self):
         return self.render_template('admin/task/main.html')
 
     # 获取数据
-    @authorize("admin:task:remove", log=True)
+    @authorize("admin:task:remove", log=False)
     def data(self):
         # jobs = scheduler_proj.get_jobs()
         # print(jobs)

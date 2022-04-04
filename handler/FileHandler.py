@@ -22,12 +22,12 @@ from . import BaseHandler
 
 
 class FileHandler(BaseHandler):
-    @authorize("admin:file:main", log=True)
+    @authorize("admin:file:main", log=False)
     def main(self):
         return self.render_template('admin/file/main.html')
 
     # 图片数据
-    @authorize("admin:file:main", log=True)
+    @authorize("admin:file:main", log=False)
     def data(self):
         # path = "static/admin/admin/data/fileTable.json"
         # with open(path, 'r') as load_f:
@@ -50,7 +50,7 @@ class FileHandler(BaseHandler):
         return self.table_api(data=data, count=page_result.total)
 
     # 上传页面
-    @authorize("admin:file:add", log=True)
+    @authorize("admin:file:add", log=False)
     def upload(self):
         return self.render_template('admin/file/upload.html')
 

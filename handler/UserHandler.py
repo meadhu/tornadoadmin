@@ -20,12 +20,12 @@ from tornado.escape import xhtml_escape as xss_escape
 
 class UserHandler(BaseHandler):
     # 用户管理
-    @authorize("admin:user:main", log=True)
+    @authorize("admin:user:main", log=False)
     def main(self):
         return self.render_template('admin/user/main.html')
 
     # 用户分页查询
-    @authorize("admin:user:main", log=True)
+    @authorize("admin:user:main", log=False)
     def data(self):
         # 获取请求参数
         # real_name = xss_escape(request.args.get('realName', type=str))
@@ -73,7 +73,7 @@ class UserHandler(BaseHandler):
         return self.table_api(data=data, count=page_result.total)
 
     # 用户增加
-    @authorize("admin:user:add", log=True)
+    @authorize("admin:user:add", log=False)
     def add(self):
         roles = []
         # roles_model_list = session.query(Role).filter(Role.enable==1).all()
@@ -122,7 +122,7 @@ class UserHandler(BaseHandler):
         return self.success_api(msg="删除成功")
 
     # 编辑用户
-    @authorize("admin:user:edit", log=True)
+    @authorize("admin:user:edit", log=False)
     def edit(self):
         id = self.get_argument('id', '')
         if not id:

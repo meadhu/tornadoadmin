@@ -7,7 +7,6 @@ import traceback
 
 import tornado.web
 import tornado.util
-from tornado.escape import xhtml_escape as xss_escape
 
 from common import session
 from common.DbHelper import object_to_dict
@@ -78,19 +77,3 @@ class BaseHandler(HttpHelper, CustomExceptionHandler):
         user_id = self.get_secure_cookie("login_user_id")
         if user_id:
             self.current_user = object_to_dict(session.query(User).filter_by(id=user_id).first())
-
-    def login_log(self, uid, is_access):
-        info = {
-            'method': self.request.method,
-            'url': self.request.path,
-            'ip': self.request.remote_ip,
-            'user_agent': xss_escape(self.request.headers.get('User-Agent')),
-            'desc': xss_escape(self.get_argument('username', '')),
-            'uid': uid,
-            'success': int(is_access)
-        }
-        log = AdminLog(**info)
-        session.add(log)
-        session.flush()
-        session.commit()
-        return log.id

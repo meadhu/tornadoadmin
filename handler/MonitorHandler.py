@@ -19,7 +19,7 @@ from . import BaseHandler
 class MonitorHandler(BaseHandler):
 
     # 系统监控
-    @authorize("admin:monitor:main", log=True)
+    @authorize("admin:monitor:main", log=False)
     def main(self):
         # 主机名称
         hostname = platform.node()
@@ -79,7 +79,6 @@ class MonitorHandler(BaseHandler):
                                disk_partitions_list=disk_partitions_list,
                                time_now=time_now
                                )
-
 
     # 图表 api
     @authorize("admin:monitor:main")
