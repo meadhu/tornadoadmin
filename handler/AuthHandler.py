@@ -8,7 +8,8 @@ from . import BaseHandler
 
 class AuthHandler(BaseHandler):
     def login(self):
-        self.write("login page")
+        # self.write("login page")
+        return self.render("admin/login")
 
     def logout(self):
         self.write("logout page")

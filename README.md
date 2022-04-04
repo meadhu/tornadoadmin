@@ -20,7 +20,7 @@
 
 
 <div align="center">
-  <img  width="100%" style="border-radius:10px;margin-top:20px;margin-bottom:20px;box-shadow: 2px 0 6px gray;" src="docs/screen1.png" />
+  <img  width="100%" style="border-radius:10px;margin-top:20px;margin-bottom:20px;box-shadow: 2px 0 6px gray;" src="docs/screen/screen1.png" />
 </div>
 
 #### 项目简介
@@ -40,68 +40,74 @@
 - [x] 服务监控：监视当前系统CPU、内存、磁盘、python版本,运行时长等相关信息。
 - [x] 文件上传:   图片上传示例
 - [x] 定时任务:   简单的定时任务
-- [ ] 代码生成:   构想中....
+- [x] 代码生成:   根据表生成model, 根据表生成增删改查后端代码和前台页面
 
 ####  项目结构
 
 ```
 Tornado Admin
-├─applications  # 应用
-│  ├─configs  # 配置文件
-│  │  ├─ common.py  # 普通配置
-│  │  └─ config.py  # 配置文件对象
-│  ├─extensions  # 注册插件
-│  ├─models  # 数据模型
-│  ├─static  # 静态资源文件
-│  ├─templates  # 静态模板文件
-│  └─views  # 视图部分
-│     ├─admin  # 后台管理视图模块
-│     └─index  # 前台视图模块
-├─docs  # 文档说明（占坑）
-├─migrations  # 迁移文件记录
-├─requirement  # 依赖文件
-├─test # 测试文件夹（占坑）
-└─.env # 项目的配置文件
-
+├─common  # 公共类
+│  ├─ __init__.py  # 项目启动时, 初始化数据库连接
+│  ├─ ApsChedulerHelper.py  # 定时任务类
+│  ├─ DbHelper.py  # 数据库连接公共类
+│  └─ HttpHelper.py  # Http请求公共类
+├─config  # 配置文件
+│  └─ __init__.py
+├─docker_data
+├─docs  # 文档
+├─handler  # 控制器层
+│  ├─ __init__.py
+│  ├─ IndexHandler.py  # 前台首页
+│  ├─ HomeHandler.py   # 后台首页
+│  ├─ AuthHandler.py   # 前台登录相关
+│  ├─ BaseHandler.py   # 公共类
+│  ├─ DeptHandler.py   # 部门管理
+│  ├─ DictHandler.py   # 字典管理
+│  ├─ FileHandler.py   # 文件管理
+│  ├─ LogHandler.py    # 日志管理
+│  ├─ MonitorHandler.py  # 监控管理
+│  ├─ PowerHandler.py  # 权限管理
+│  ├─ RoleHandler.py   # 角色管理
+│  ├─ TaskHandler.py   # 任务管理
+│  └─ UserHandler.py   # 用户管理
+├─models
+├─static  # 静态文件
+├─templates  # 模板
+├─app.py  # 主入口
+├─docker-compose.yml
+├─Dockerfile
+├─README.md
+├─requirements.txt
+└─start.sh
 ```
 
-
-
-#### 项目安装
+#### 本地开发环境搭建
 
 ```bash
 # 下 载
 git clone https://gitee.com/meadhu/tornadoadmin.git
-
 # 安 装
 pip install -r requirements.txt -i https://pypi.douban.com/simple
-# 配 置
-.env
-
+# 修改数据库连接信息 【不需要提前创建数据库, 在第一次运行时会自动创建并导入初始化数据】
+config/__init__.py
+# 执行命令启动项目 【项目第一次启动, 会自动创建数据库, 并导入初始化数据】
+python run.py
+# 访问
+http://localhost:3000/
 ```
 
-#### 修改配置
-
-```python
-.env
-# MySql配置信息
-MYSQL_HOST=127.0.0.1
-MYSQL_PORT=3306
-MYSQL_DATABASE=PearAdminFlask
-MYSQL_USERNAME=root
-MYSQL_PASSWORD=root
-
-# Redis 配置
-REDIS_HOST=127.0.0.1
-REDIS_PORT=6379
-
-# 密钥配置
-SECRET_KEY='pear-admin-flask'
-
-# 邮箱配置
-MAIL_SERVER='smtp.qq.com'
-MAIL_USERNAME='123@qq.com'
-MAIL_PASSWORD='XXXXX' # 生成的授权码
+#### 线上docker部署
+```shell
+# 下 载
+git clone https://gitee.com/meadhu/tornadoadmin.git
+# 进入项目目录
+cd tornadoadmin
+# docker compose 构建项目镜像
+docker-compose build
+# docker-compose 运行项目
+docker-compose up -d
+# 访问
+http://XXXX:3000/
 ```
 
 #### Venv 安装
@@ -110,25 +116,86 @@ MAIL_PASSWORD='XXXXX' # 生成的授权码
 python -m venv venv
 ```
 
-#### 运行项目
+#### 命令行工具
 
 ```bash
-# 初 始 化 数 据 库
-
-python app.py init
+# 通过表名, 反向生成Model
+python app.py gen_model <表名>
+# 通过表名，生成CRUD页面和功能（前提是已经生成了Model）
+python app.py gen_crud <表名>
+# 在 /app.py 中, 添加路由
 ```
 
-执行 python app.py 命令启动项目
-
-#### 命令行生成新模块的CRUD
-
-```bash
-# 示例
-python app.py crud <表名>
+#### 代码生成示例
+```shell
+# 1. 创建表
+DROP TABLE IF EXISTS `admin_project`;
+CREATE TABLE `admin_project`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '项目名称',
+  `code` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '项目标识',
+  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '备注',
+  `details` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '详情',
+  `sort` int(11) NULL DEFAULT NULL COMMENT '排序',
+  `create_at` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_at` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `enable` int(11) NULL DEFAULT NULL COMMENT '是否启用',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;
+INSERT INTO `admin_project` VALUES (1, '示例项目一', 'proj_code_1', '这是示例项目一的备注信息', '这是示例项目一的详情信息', 10, NULL, NULL, 1);
+INSERT INTO `admin_project` VALUES (2, '示例项目2', 'proj_code_2', '这是示例项目2的备注信息', '这是示例项目2的详情信息', 20, NULL, NULL, 1);
+INSERT INTO `admin_project` VALUES (3, '示例项目3', 'proj_code_3', '这是示例项目3的备注信息', '这是示例项目3的详情信息', 30, NULL, NULL, 0);
+SELECT * from `admin_project` ORDER BY id DESC LIMIT 10;
 ```
+
+<div align="center">
+  <img  width="100%" style="border-radius:10px;margin-top:20px;margin-bottom:20px;box-shadow: 2px 0 6px gray;" src="docs/gii/demo1.png" />
+</div>
+
+```shell
+# 2. 生成 model
+python app.py gen_model admin_project
+```
+
+<div align="center">
+  <img  width="100%" style="border-radius:10px;margin-top:20px;margin-bottom:20px;box-shadow: 2px 0 6px gray;" src="docs/gii/demo2.png" />
+  <img  width="100%" style="border-radius:10px;margin-top:20px;margin-bottom:20px;box-shadow: 2px 0 6px gray;" src="docs/gii/demo3.png" />
+</div>
+
+```shell
+# 3. 生成 后端功能和前端页面
+python app.py gen_crud admin_project
+```
+
+<div align="center">
+  <img  width="100%" style="border-radius:10px;margin-top:20px;margin-bottom:20px;box-shadow: 2px 0 6px gray;" src="docs/gii/demo4.png" />
+  <img  width="100%" style="border-radius:10px;margin-top:20px;margin-bottom:20px;box-shadow: 2px 0 6px gray;" src="docs/gii/demo10.png" />
+</div>
+
+```shell
+# 4. 修改 app.py 中，路由配置
+```
+<div align="center">
+  <img  width="100%" style="border-radius:10px;margin-top:20px;margin-bottom:20px;box-shadow: 2px 0 6px gray;" src="docs/gii/demo12.png" />
+</div>
+
+```shell
+# 5. 启动项目，访问 http://localhost:3000/admin/project/main
+```
+<div align="center">
+  <img  width="100%" style="border-radius:10px;margin-top:20px;margin-bottom:20px;box-shadow: 2px 0 6px gray;" src="docs/gii/demo16.png" />
+</div>
 
 #### 预览项目
 
+<div align="center">
+  <img  width="100%" style="border-radius:10px;margin-top:20px;margin-bottom:20px;box-shadow: 2px 0 6px gray;" src="docs/screen/screen2.png" />
+  <img  width="100%" style="border-radius:10px;margin-top:20px;margin-bottom:20px;box-shadow: 2px 0 6px gray;" src="docs/screen/screen3.png" />
+  <img  width="100%" style="border-radius:10px;margin-top:20px;margin-bottom:20px;box-shadow: 2px 0 6px gray;" src="docs/screen/screen4.png" />
+  <img  width="100%" style="border-radius:10px;margin-top:20px;margin-bottom:20px;box-shadow: 2px 0 6px gray;" src="docs/screen/screen10.png" />
+  <img  width="100%" style="border-radius:10px;margin-top:20px;margin-bottom:20px;box-shadow: 2px 0 6px gray;" src="docs/screen/screen12.png" />
+  <img  width="100%" style="border-radius:10px;margin-top:20px;margin-bottom:20px;box-shadow: 2px 0 6px gray;" src="docs/screen/screen15.png" />
+</div>
 
 ```shell
 # 分页代码  https://github.com/wizeline/sqlalchemy-pagination

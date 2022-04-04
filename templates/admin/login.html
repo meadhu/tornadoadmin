@@ -15,7 +15,7 @@
         <img class="logo" src="{{ url_for('static', filename='/admin/admin/images/logo.png') }}"/>
         <div class="title">Tornado Admin</div>
         <div class="desc">
-            全网第一开源 Tornado Admin
+            基于 <span class="pear-text">Tornado框架 + layUI前端</span> 二次开发
         </div>
     </div>
     <div class="layui-form-item">
@@ -38,7 +38,7 @@
         </button>
     </div>
 </form>
-{% include '../common/footer.html' %}
+{% include 'common/footer.html' %}
 <script>
     layui.use(['form', 'jquery', 'layer', 'button', 'popup'], function () {
         let form = layui.form;

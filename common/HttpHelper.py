@@ -9,7 +9,6 @@ import tornado.web
 
 def authorize(power: str, log: bool = False):
     def decorator(func):
-        # @login_required
         # @tornado.web.authenticated
         @wraps(func)
         def wrapper(*args, **kwargs):

@@ -51,11 +51,11 @@ CREATE TABLE `admin_dept`  (
 -- ----------------------------
 -- Records of admin_dept
 -- ----------------------------
-INSERT INTO `admin_dept` VALUES (1, 0, '总公司', 1, '就眠仪式', '12312345679', '123qq.com', 1, NULL, '这是总公司', NULL, '2021-06-01 17:23:20');
-INSERT INTO `admin_dept` VALUES (4, 1, '济南分公司', 2, '就眠仪式', '12312345678', '1234qq.com', 1, NULL, '这是济南', '2021-06-01 17:24:33', '2021-06-01 17:25:19');
-INSERT INTO `admin_dept` VALUES (5, 1, '唐山分公司', 4, 'mkg', '12312345678', '123@qq.com', 1, NULL, '这是唐山', '2021-06-01 17:25:15', '2021-06-01 17:25:20');
-INSERT INTO `admin_dept` VALUES (7, 4, '济南分公司开发部', 5, '就眠仪式', '12312345678', '123@qq.com', 1, NULL, '测试', '2021-06-01 17:27:39', '2021-06-01 17:27:39');
-INSERT INTO `admin_dept` VALUES (8, 5, '唐山测试部', 6, 'mkg', '12312345678', '123@qq.com', 1, NULL, '测试部', '2021-06-01 17:28:27', '2021-06-01 17:28:27');
+INSERT INTO `admin_dept` VALUES (1, 0, '总公司', 1, '总裁办', '12312345679', '123qq.com', 1, NULL, '这是总公司', NULL, '2022-06-01 17:23:20');
+INSERT INTO `admin_dept` VALUES (4, 1, '济南分公司', 2, '分公司管理员01', '12312345678', '1234qq.com', 1, NULL, '这是济南', '2022-06-01 17:24:33', '2022-06-01 17:25:19');
+INSERT INTO `admin_dept` VALUES (5, 1, '唐山分公司', 4, '分公司管理员02', '12312345678', '123@qq.com', 1, NULL, '这是唐山', '2022-06-01 17:25:15', '2022-06-01 17:25:20');
+INSERT INTO `admin_dept` VALUES (7, 4, '济南分公司开发部', 5, '分公司经理01', '12312345678', '123@qq.com', 1, NULL, '测试', '2022-06-01 17:27:39', '2022-06-01 17:27:39');
+INSERT INTO `admin_dept` VALUES (8, 5, '唐山测试部', 6, '分公司经理02', '12312345678', '123@qq.com', 1, NULL, '测试部', '2022-06-01 17:28:27', '2022-06-01 17:28:27');
 
 -- ----------------------------
 -- Table structure for admin_dict_data
@@ -77,8 +77,8 @@ CREATE TABLE `admin_dict_data`  (
 -- ----------------------------
 -- Records of admin_dict_data
 -- ----------------------------
-INSERT INTO `admin_dict_data` VALUES (8, '男', 'boy', 'user_sex', NULL, 1, '男 : body', '2021-04-16 13:36:34', '2021-04-16 14:05:06');
-INSERT INTO `admin_dict_data` VALUES (9, '女', 'girl', 'user_sex', NULL, 1, '女 : girl', '2021-04-16 13:36:55', '2021-04-16 13:36:55');
+INSERT INTO `admin_dict_data` VALUES (8, '男', 'boy', 'user_sex', NULL, 1, '男 : body', '2022-04-16 13:36:34', '2022-04-16 14:05:06');
+INSERT INTO `admin_dict_data` VALUES (9, '女', 'girl', 'user_sex', NULL, 1, '女 : girl', '2022-04-16 13:36:55', '2022-04-16 13:36:55');
 
 -- ----------------------------
 -- Table structure for admin_dict_type
@@ -98,7 +98,7 @@ CREATE TABLE `admin_dict_type`  (
 -- ----------------------------
 -- Records of admin_dict_type
 -- ----------------------------
-INSERT INTO `admin_dict_type` VALUES (1, '用户性别', 'user_sex', '用户性别', 1, NULL, '2021-04-16 13:37:11');
+INSERT INTO `admin_dict_type` VALUES (1, '用户性别', 'user_sex', '用户性别', 1, NULL, '2022-04-16 13:37:11');
 
 -- ----------------------------
 -- Table structure for admin_photo
@@ -112,13 +112,13 @@ CREATE TABLE `admin_photo`  (
   `size` char(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `create_time` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of admin_photo
 -- ----------------------------
-INSERT INTO `admin_photo` VALUES (3, '6958819_pear-admin_1607443454_1.png', 'http://127.0.0.1:5000/_uploads/photos/6958819_pear-admin_1607443454_1.png', 'image/png', '2204', '2021-03-19 18:53:02');
-INSERT INTO `admin_photo` VALUES (17, '1617291580000.jpg', 'http://127.0.0.1:5000/_uploads/photos/1617291580000.jpg', 'image/png', '94211', '2021-04-01 23:39:41');
+INSERT INTO `admin_photo` VALUES (1, 'logo.png', '/static/admin/admin/images/logo.png', 'image/png', '2204', '2022-03-19 18:53:02');
+INSERT INTO `admin_photo` VALUES (2, 'show.png', '/static/admin/admin/images/show.png', 'image/png', '94211', '2022-04-01 23:39:41');
 
 -- ----------------------------
 -- Table structure for admin_power
@@ -148,7 +148,7 @@ INSERT INTO `admin_power` VALUES (3, '用户管理', '1', 'admin:user:main', '/a
 INSERT INTO `admin_power` VALUES (4, '权限管理', '1', 'admin:power:main', '/admin/power/', '_iframe', '1', NULL, 2, NULL, NULL, 1);
 INSERT INTO `admin_power` VALUES (9, '角色管理', '1', 'admin:role:main', '/admin/role', '_iframe', '1', 'layui-icon layui-icon-username', 2, '2021-03-16 22:24:58', '2021-03-25 19:15:24', 1);
 INSERT INTO `admin_power` VALUES (12, '系统监控', '1', 'admin:monitor:main', '/admin/monitor', '_iframe', '1', 'layui-icon layui-icon-vercode', 5, '2021-03-18 22:05:19', '2021-03-25 19:15:27', 1);
-INSERT INTO `admin_power` VALUES (13, '日志管理', '1', 'admin:log:main', '/admin/log', '_iframe', '1', 'layui-icon layui-icon-read', 4, '2021-03-18 22:37:10', '2021-06-03 11:06:25', 1);
+INSERT INTO `admin_power` VALUES (13, '日志管理', '1', 'admin:log:main', '/admin/log', '_iframe', '1', 'layui-icon layui-icon-read', 4, '2021-03-18 22:37:10', '2022-06-03 11:06:25', 1);
 INSERT INTO `admin_power` VALUES (17, '文件管理', '0', '', '', '', '0', 'layui-icon layui-icon-camera', 2, '2021-03-19 18:56:23', '2021-03-25 19:15:08', 1);
 INSERT INTO `admin_power` VALUES (18, '图片上传', '1', 'admin:file:main', '/admin/file', '_iframe', '17', 'layui-icon layui-icon-camera', 5, '2021-03-19 18:57:19', '2021-03-25 19:15:13', 1);
 INSERT INTO `admin_power` VALUES (21, '权限增加', '2', 'admin:power:add', '', '', '4', 'layui-icon layui-icon-add-circle', 1, '2021-03-22 19:43:52', '2021-03-25 19:15:22', 1);
@@ -163,19 +163,19 @@ INSERT INTO `admin_power` VALUES (29, '角色删除', '2', 'admin:role:remove', 
 INSERT INTO `admin_power` VALUES (30, '角色授权', '2', 'admin:role:power', '', '', '9', 'layui-icon layui-icon-component', 4, '2021-03-22 19:50:54', '2021-03-25 19:15:26', 1);
 INSERT INTO `admin_power` VALUES (31, '图片增加', '2', 'admin:file:add', '', '', '18', 'layui-icon layui-icon-add-circle', 1, '2021-03-22 19:58:05', '2021-03-25 19:15:28', 1);
 INSERT INTO `admin_power` VALUES (32, '图片删除', '2', 'admin:file:delete', '', '', '18', 'layui-icon layui-icon-delete', 2, '2021-03-22 19:58:45', '2021-03-25 19:15:29', 1);
-INSERT INTO `admin_power` VALUES (44, '数据字典', '1', 'admin:dict:main', '/admin/dict', '_iframe', '1', 'layui-icon layui-icon-console', 6, '2021-04-16 13:59:49', '2021-04-16 13:59:49', 1);
-INSERT INTO `admin_power` VALUES (45, '字典增加', '2', 'admin:dict:add', '', '', '44', 'layui-icon ', 1, '2021-04-16 14:00:59', '2021-04-16 14:00:59', 1);
-INSERT INTO `admin_power` VALUES (46, '字典修改', '2', 'admin:dict:edit', '', '', '44', 'layui-icon ', 2, '2021-04-16 14:01:33', '2021-04-16 14:01:33', 1);
-INSERT INTO `admin_power` VALUES (47, '字典删除', '2', 'admin:dict:remove', '', '', '44', 'layui-icon ', 3, '2021-04-16 14:02:06', '2021-04-16 14:02:06', 1);
-INSERT INTO `admin_power` VALUES (48, '部门管理', '1', 'admin:dept:main', '/dept', '_iframe', '1', 'layui-icon layui-icon-group', 3, '2021-06-01 16:22:11', '2021-07-07 13:49:39', 1);
-INSERT INTO `admin_power` VALUES (49, '部门增加', '2', 'admin:dept:add', '', '', '48', 'layui-icon None', 1, '2021-06-01 17:35:52', '2021-06-01 17:36:15', 1);
-INSERT INTO `admin_power` VALUES (50, '部门编辑', '2', 'admin:dept:edit', '', '', '48', 'layui-icon ', 2, '2021-06-01 17:36:41', '2021-06-01 17:36:41', 1);
-INSERT INTO `admin_power` VALUES (51, '部门删除', '2', 'admin:dept:remove', '', '', '48', 'layui-icon None', 3, '2021-06-01 17:37:15', '2021-06-01 17:37:26', 1);
-INSERT INTO `admin_power` VALUES (52, '定时任务', '0', '', '', '', '0', 'layui-icon layui-icon-log', 3, '2021-06-22 21:09:01', '2021-06-22 21:09:01', 1);
-INSERT INTO `admin_power` VALUES (53, '任务管理', '1', 'admin:task:main', '/admin/task', '_iframe', '52', 'layui-icon ', 1, '2021-06-22 21:15:00', '2021-06-22 21:15:00', 1);
-INSERT INTO `admin_power` VALUES (54, '任务增加', '2', 'admin:task:add', '', '', '53', 'layui-icon ', 1, '2021-06-22 22:20:54', '2021-06-22 22:20:54', 1);
-INSERT INTO `admin_power` VALUES (55, '任务修改', '2', 'admin:task:edit', '', '', '53', 'layui-icon ', 2, '2021-06-22 22:21:34', '2021-06-22 22:21:34', 1);
-INSERT INTO `admin_power` VALUES (56, '任务删除', '2', 'admin:task:remove', '', '', '53', 'layui-icon ', 3, '2021-06-22 22:22:18', '2021-06-22 22:22:18', 1);
+INSERT INTO `admin_power` VALUES (44, '数据字典', '1', 'admin:dict:main', '/admin/dict', '_iframe', '1', 'layui-icon layui-icon-console', 6, '2022-04-16 13:59:49', '2022-04-16 13:59:49', 1);
+INSERT INTO `admin_power` VALUES (45, '字典增加', '2', 'admin:dict:add', '', '', '44', 'layui-icon ', 1, '2022-04-16 14:00:59', '2022-04-16 14:00:59', 1);
+INSERT INTO `admin_power` VALUES (46, '字典修改', '2', 'admin:dict:edit', '', '', '44', 'layui-icon ', 2, '2022-04-16 14:01:33', '2022-04-16 14:01:33', 1);
+INSERT INTO `admin_power` VALUES (47, '字典删除', '2', 'admin:dict:remove', '', '', '44', 'layui-icon ', 3, '2022-04-16 14:02:06', '2022-04-16 14:02:06', 1);
+INSERT INTO `admin_power` VALUES (48, '部门管理', '1', 'admin:dept:main', '/admin/dept', '_iframe', '1', 'layui-icon layui-icon-group', 3, '2022-06-01 16:22:11', '2021-07-07 13:49:39', 1);
+INSERT INTO `admin_power` VALUES (49, '部门增加', '2', 'admin:dept:add', '', '', '48', 'layui-icon None', 1, '2022-06-01 17:35:52', '2022-06-01 17:36:15', 1);
+INSERT INTO `admin_power` VALUES (50, '部门编辑', '2', 'admin:dept:edit', '', '', '48', 'layui-icon ', 2, '2022-06-01 17:36:41', '2022-06-01 17:36:41', 1);
+INSERT INTO `admin_power` VALUES (51, '部门删除', '2', 'admin:dept:remove', '', '', '48', 'layui-icon None', 3, '2022-06-01 17:37:15', '2022-06-01 17:37:26', 1);
+INSERT INTO `admin_power` VALUES (52, '定时任务', '0', '', '', '', '0', 'layui-icon layui-icon-log', 3, '2022-06-22 21:09:01', '2022-06-22 21:09:01', 1);
+INSERT INTO `admin_power` VALUES (53, '任务管理', '1', 'admin:task:main', '/admin/task', '_iframe', '52', 'layui-icon ', 1, '2022-06-22 21:15:00', '2022-06-22 21:15:00', 1);
+INSERT INTO `admin_power` VALUES (54, '任务增加', '2', 'admin:task:add', '', '', '53', 'layui-icon ', 1, '2022-06-22 22:20:54', '2022-06-22 22:20:54', 1);
+INSERT INTO `admin_power` VALUES (55, '任务修改', '2', 'admin:task:edit', '', '', '53', 'layui-icon ', 2, '2022-06-22 22:21:34', '2022-06-22 22:21:34', 1);
+INSERT INTO `admin_power` VALUES (56, '任务删除', '2', 'admin:task:remove', '', '', '53', 'layui-icon ', 3, '2022-06-22 22:22:18', '2022-06-22 22:22:18', 1);
 
 -- ----------------------------
 -- Table structure for admin_role
@@ -192,13 +192,13 @@ CREATE TABLE `admin_role`  (
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `enable` int(11) NULL DEFAULT NULL COMMENT '是否启用',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of admin_role
 -- ----------------------------
 INSERT INTO `admin_role` VALUES (1, '管理员', 'admin', NULL, '管理员', 1, NULL, NULL, 1);
-INSERT INTO `admin_role` VALUES (2, '普通用户', 'common', NULL, '只有查看，没有增删改权限', 2, '2021-03-22 20:02:38', '2021-04-01 22:29:56', 1);
+INSERT INTO `admin_role` VALUES (2, '普通用户', 'common', NULL, '只有查看，没有增删改权限', 2, '2022-03-22 20:02:38', '2022-04-01 22:29:56', 1);
 
 -- ----------------------------
 -- Table structure for admin_role_power
@@ -283,9 +283,9 @@ CREATE TABLE `admin_user`  (
 -- ----------------------------
 -- Records of admin_user
 -- ----------------------------
-INSERT INTO `admin_user` VALUES (1, 'admin', 'pbkdf2:sha256:150000$raM7mDSr$58fe069c3eac01531fc8af85e6fc200655dd2588090530084d182e6ec9d52c85', NULL, '2021-06-01 17:28:55', 1, '超级管理', '要是不能把握时机，就要终身蹭蹬，一事无成！', 'http://127.0.0.1:5000/_uploads/photos/1617291580000.jpg', 1);
-INSERT INTO `admin_user` VALUES (7, 'test', 'pbkdf2:sha256:150000$cRS8bYNh$adb57e64d929863cf159f924f74d0634f1fecc46dba749f1bfaca03da6d2e3ac', '2021-03-22 20:03:42', '2021-06-01 17:29:47', 1, '超级管理', '要是不能把握时机，就要终身蹭蹬，一事无成', '/static/admin/admin/images/avatar.jpg', 1);
-INSERT INTO `admin_user` VALUES (8, 'wind', 'pbkdf2:sha256:150000$skME1obT$6a2c20cd29f89d7d2f21d9e373a7e3445f70ebce3ef1c3a555e42a7d17170b37', '2021-06-01 17:30:39', '2021-06-01 17:30:52', 1, '风', NULL, '/static/admin/admin/images/avatar.jpg', 7);
+INSERT INTO `admin_user` VALUES (1, 'admin', 'pbkdf2:sha256:150000$raM7mDSr$58fe069c3eac01531fc8af85e6fc200655dd2588090530084d182e6ec9d52c85', NULL, '2022-06-01 17:28:55', 1, '超级管理', '要是不能把握时机，就要终身蹭蹬，一事无成！', '/static/admin/admin/images/avatar.jpg', 1);
+INSERT INTO `admin_user` VALUES (7, 'test', 'pbkdf2:sha256:150000$cRS8bYNh$adb57e64d929863cf159f924f74d0634f1fecc46dba749f1bfaca03da6d2e3ac', '2021-03-22 20:03:42', '2022-06-01 17:29:47', 1, '超级管理', '要是不能把握时机，就要终身蹭蹬，一事无成', '/static/admin/admin/images/avatar.jpg', 1);
+INSERT INTO `admin_user` VALUES (8, 'demo', 'pbkdf2:sha256:150000$skME1obT$6a2c20cd29f89d7d2f21d9e373a7e3445f70ebce3ef1c3a555e42a7d17170b37', '2022-06-01 17:30:39', '2022-06-01 17:30:52', 1, '风', NULL, '/static/admin/admin/images/avatar.jpg', 7);
 
 -- ----------------------------
 -- Table structure for admin_user_role
@@ -308,19 +308,3 @@ CREATE TABLE `admin_user_role`  (
 INSERT INTO `admin_user_role` VALUES (21, 1, 1);
 INSERT INTO `admin_user_role` VALUES (22, 7, 2);
 INSERT INTO `admin_user_role` VALUES (24, 8, 2);
-
--- ----------------------------
--- Table structure for alembic_version
--- ----------------------------
-DROP TABLE IF EXISTS `alembic_version`;
-CREATE TABLE `alembic_version`  (
-  `version_num` varchar(32) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`version_num`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of alembic_version
--- ----------------------------
-INSERT INTO `alembic_version` VALUES ('7634e028e338');
-
-SET FOREIGN_KEY_CHECKS = 1;

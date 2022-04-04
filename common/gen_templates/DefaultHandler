@@ -1,0 +1,120 @@
+"""
+# {{class_name}}管理
+"""
+
+from __future__ import absolute_import
+
+import json
+import traceback
+
+import tornado
+from sqlalchemy import and_
+from sqlalchemy_pagination import paginate
+from tornado.escape import json_decode
+from tornado.escape import xhtml_escape as xss_escape
+
+from common import session
+from common.DbHelper import object_to_dict
+from common.HttpHelper import authorize
+from models import {{class_name}}
+from . import BaseHandler
+
+
+class {{class_name}}Handler(BaseHandler):
+    def main(self):
+        return self.render_template('admin/{{view_name}}/main.html')
+
+    def data(self):
+        # 获取请求参数
+        page = xss_escape(self.get_argument('page', self.settings['config']['default_page'].encode()))
+        page_size = xss_escape(self.get_argument('limit', self.settings['config']['default_page_size'].encode()))
+        name = xss_escape(self.get_argument('name', ''))
+        query = session.query({{class_name}})
+        rule_list = []
+        if name:
+            rule_list.append({{class_name}}.name.like("".join(["%", name, "%"])))
+        query = query.filter(and_(*rule_list))
+        page_result = paginate(query=query, page=int(page), page_size=int(page_size))
+        result = page_result.items
+        data = [object_to_dict(i) for i in result]
+        return self.table_api(data=data, count=page_result.total)
+
+    def add(self):
+        return self.render_template('admin/{{view_name}}/add.html')
+
+    # 保存数据
+    def save(self):
+        req_json = json_decode(self.request.body)
+        _field_dict = {}
+        {% for field_name in field_name_list if field_name not in ["id", "create_at", "update_at"] -%}
+        _field_dict["{{field_name}}"] = xss_escape(req_json.get('{{field_name}}', ''))
+        {% endfor %}
+        _model = {{class_name}}(**_field_dict)
+        try:
+            # 只添加，还没有提交，如果出错还可以撤回(rollback)
+            session.add(_model)
+            # 提交到数据库
+            session.commit()
+        except Exception as e:
+            session.rollback()
+            print(traceback.format_exc())
+            return self.fail_api()
+        return self.success_api(msg="保存成功")
+
+    def edit(self):
+        _id = self.get_argument('id', '')
+        _model = session.query({{class_name}}).filter_by(id=_id).first()
+        return self.render_template('admin/{{view_name}}/edit.html', model=object_to_dict(_model))
+
+    # 启用
+    def enable(self):
+        req_json = json_decode(self.request.body)
+        _id = req_json.get('id', '')
+        if not _id:
+            return self.fail_api(msg="数据错误")
+        res = session.query({{class_name}}).filter_by(id=_id).update({"enable": 1})
+        if res:
+            return self.success_api(msg="启用成功")
+        return self.fail_api(msg="出错啦")
+
+    # 禁用
+    def disable(self):
+        req_json = json_decode(self.request.body)
+        _id = req_json.get("id", "")
+        if not _id:
+            return self.fail_api(msg="数据错误")
+        res = session.query({{class_name}}).filter_by(id=_id).update({"enable": 0})
+        if res:
+            return self.success_api(msg="禁用成功")
+        return self.fail_api(msg="出错啦")
+
+    def update(self):
+        req_json = json_decode(self.request.body)
+        id = req_json.get("id", "")
+        data = {}
+        {% for field_name in field_name_list if field_name not in ["id", "create_at", "update_at"] -%}
+        data["{{field_name}}"] = xss_escape(req_json.get('{{field_name}}', ''))
+        {% endfor %}
+        res = session.query({{class_name}}).filter_by(id=id).update(data)
+        if not res:
+            return self.fail_api(msg="更新失败")
+        return self.success_api(msg="更新成功")
+
+    def remove(self):
+        _id = self.get_argument("id", "")
+        if not _id:
+            return self.fail_api("数据错误!")
+        res = session.query({{class_name}}).filter_by(id=_id).delete()
+        if not res:
+            return self.fail_api(msg="删除失败")
+        return self.success_api(msg="删除成功")
+
+    def batch_remove(self):
+        ids = self.get_arguments('ids[]')
+        if not ids:
+            return self.fail_api(msg="数据错误!")
+        # 返回受影响的行数
+        res = session.query({{class_name}}).filter({{class_name}}.id.in_(ids)).delete()
+        if not res:
+            return self.fail_api(msg="删除失败")
+        return self.success_api(msg="批量删除成功")

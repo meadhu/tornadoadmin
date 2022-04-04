@@ -34,10 +34,11 @@ class DbHelper:
 
     def first_install_check(self):
         if self.is_exist_database():
-            # print('数据库已经存在,为防止误初始化，请手动删除 %s 数据库' % str(DATABASE))
+            print('数据库(%s)已经存在, 无需初始化数据' % str(DATABASE))
             return
         if self.create_database():
             print('数据库%s创建成功' % str(DATABASE))
+        print("正在导入SQL文件，初始化数据，请稍等。。。")
         self.execute_fromfile('docs/install.sql')
         print('表创建成功')
         print('欢迎使用 tornadoadmin, 请使用 python run 命令启动程序')

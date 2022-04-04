@@ -11,6 +11,8 @@ import tornado.ioloop
 
 from tornado.options import define, options
 
+from common.GenTool import GenTool
+
 define("port", default=3000, help="run on the given port", type=int)
 define("env", default='dev', type=str)
 os.environ['app_env'] = options.env
@@ -41,11 +43,11 @@ class Application(tornado.web.Application):
 
 def main():
     router = [
-        # (r'/', IndexHandler),  # 后台首页
-        (r'/', HomeHandler),  # 后台首页
-        (r"/admin/home/([^/]+)", HomeHandler),  #
+        (r'/', IndexHandler),  # 项目主入口 - 前台页面
+        # (r'/', HomeHandler),  # 项目主入口 - 后台页面
         (r"/auth/([^/]+)", AuthHandler),  # 登录相关
-        (r"/admin/dict/([^/]+)", DictHandler),  #
+        (r"/admin/home/([^/]+)", HomeHandler),  #
+        (r"/admin/dict/([^/]+)", DictHandler),  # 字典管理
         (r"/admin/dept/([^/]+)", DeptHandler),  # 部门管理
         (r"/admin/file/([^/]+)", FileHandler),  # 文件管理
         (r"/admin/log/([^/]+)", LogHandler),  # 日志管理
@@ -63,5 +65,18 @@ def main():
 
 
 if __name__ == '__main__':
-    print("项目已启动, 访问地址: http://localhost:%s" % options.port)
-    main()
+    # 通过表名, 反向生成Model
+    # python app.py gen_model <表名>
+    if 'gen_model' in sys.argv:
+        gen = GenTool()
+        table_name = sys.argv[-1]
+        gen.gen_model(table_name=table_name)
+    elif 'gen_crud' in sys.argv:
+        # 通过Model名称，生成CRUD页面和功能
+        # python app.py gen_crud <Model名称>
+        gen = GenTool()
+        table_name = sys.argv[-1]
+        gen.gen_crud(table_name=table_name)
+    else:
+        print("项目已启动, 访问地址: http://localhost:%s" % options.port)
+        main()
