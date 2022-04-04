@@ -40,7 +40,7 @@
                 <!-- 功 能 菜 单 -->
                 <dl class="layui-nav-child">
                     <dd><a user-menu-url="/admin/user/center" user-menu-id="5555" user-menu-title="基本资料">基本资料</a></dd>
-                    <dd><a href="javascript:void(0);" class="logout">注销登录</a></dd>
+                    <dd><a href="javascript:void(0);" class="logout">退出登录</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item setting"><a href="#" class="layui-icon layui-icon-more-vertical"></a></li>
@@ -92,14 +92,14 @@
     admin.logout(function () {
       let loading = layer.load()
       $.ajax({
-        url: '/passport/logout',
+        url: '/admin/user/logout',
         dataType: 'json',
         type: 'post',
         success: function (result) {
           layer.close(loading)
           if (result.success) {
             popup.success(result.msg, function () {
-              location.href = '/demo/login'
+              location.href = '/auth/login'
             })
             return true
           }

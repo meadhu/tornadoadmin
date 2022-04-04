@@ -19,7 +19,6 @@ from . import BaseHandler
 class MonitorHandler(BaseHandler):
 
     # 系统监控
-    # @admin_monitor_bp.get('/')
     @authorize("admin:monitor:main", log=True)
     def main(self):
         # 主机名称
@@ -83,7 +82,6 @@ class MonitorHandler(BaseHandler):
 
 
     # 图表 api
-    # @admin_monitor_bp.get('/polling')
     @authorize("admin:monitor:main")
     def polling(self):
         # 获取cup使用率

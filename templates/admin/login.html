@@ -22,7 +22,7 @@
         <input name="username" type="text" placeholder="账 户 : admin " value="admin" hover class="layui-input"/>
     </div>
     <div class="layui-form-item">
-        <input name="password" type="password" placeholder="密 码 : 123456 " value="123456" hover class="layui-input"/>
+        <input name="password" type="password" placeholder="密 码 : admin " value="admin" hover class="layui-input"/>
     </div>
     <!-- TODO: 验证码 -->
 <!--    <div class="layui-form-item">-->
@@ -52,7 +52,8 @@
             let loader = layer.load();
             let btn = button.load({elem: '.login'});
             $.ajax({
-                data: data.field,
+                url: "/auth/login_post",
+                data: JSON.stringify(data.field),
                 type: "post",
                 dataType: 'json',
                 success: function (result) {
@@ -60,7 +61,7 @@
                     btn.stop(function () {
                         if (result.success) {
                             popup.success(result.msg, function () {
-                                location.href = "{{ url_for('admin.index') }}";
+                                location.href = "/admin/home/main";
                             })
                         } else {
                             popup.failure(result.msg, function () {

@@ -11,12 +11,14 @@ import tornado
 
 from common import session
 from common.DbHelper import object_to_dict
+from common.HttpHelper import authorize
 from config import SYSTEM_NAME
-from models import Power
 from . import BaseHandler
 
 
 class HomeHandler(BaseHandler):
+
+    @tornado.web.authenticated
     def main(self):
         """
         主入口 文件
@@ -24,6 +26,7 @@ class HomeHandler(BaseHandler):
         """
         return self.render("admin/home.html")
 
+    @tornado.web.authenticated
     def welcome(self):
         """
         默认主页
@@ -32,6 +35,7 @@ class HomeHandler(BaseHandler):
         self.render("admin/console/console.html")
         # self.render("home/welcome.html")
 
+    @tornado.web.authenticated
     def rights_configs(self):
         """
         # 网站配置
@@ -85,6 +89,7 @@ class HomeHandler(BaseHandler):
             header=False)
         return self.jsonify(config)
 
+    @tornado.web.authenticated
     def rights_menu(self):
         """
         右侧 菜单

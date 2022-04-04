@@ -21,12 +21,10 @@ from . import BaseHandler
 
 
 class DeptHandler(BaseHandler):
-    # @dept_bp.get('/')
     @authorize("admin:dept:main", log=True)
     def main(self):
         return self.render_template('admin/dept/main.html')
 
-    # @dept_bp.post('/data')
     @authorize("admin:dept:main", log=True)
     def data(self):
         # path = "static/admin/admin/data/dept.json"
@@ -50,12 +48,10 @@ class DeptHandler(BaseHandler):
             item['deptName'] = item['dept_name']
         return self.table_api(data=data, count=page_result.total)
 
-    # @dept_bp.get('/add')
     @authorize("admin:dept:add", log=True)
     def add(self):
         return self.render_template('admin/dept/add.html')
 
-    # @dept_bp.get('/tree')
     @authorize("admin:dept:main", log=True)
     def tree(self):
         # path = "static/admin/admin/data/deptTree.json"
@@ -78,9 +74,7 @@ class DeptHandler(BaseHandler):
         return self.jsonify(res)
 
     # 保存数据
-    # @dept_bp.post('/save')
-    # @authorize("admin:dept:add", log=True)
-    # @use_args(DeptInSchema(), location="json", unknown=True)
+    @authorize("admin:dept:add", log=True)
     def save(self):
         req_json = json_decode(self.request.body)
         # print(req_json)
@@ -113,7 +107,6 @@ class DeptHandler(BaseHandler):
             return self.fail_api()
         return self.success_api(msg="保存成功")
 
-    # @dept_bp.get('/edit')
     @authorize("admin:dept:edit", log=True)
     def edit(self):
         _id = self.get_argument('deptId', '')
@@ -122,7 +115,6 @@ class DeptHandler(BaseHandler):
         return self.render_template('admin/dept/edit.html', dept=dept)
 
     # 启用
-    # @dept_bp.put('/enable')
     @authorize("admin:dept:edit", log=True)
     def enable(self):
         req_json = json_decode(self.request.body)
@@ -135,7 +127,6 @@ class DeptHandler(BaseHandler):
         return self.fail_api(msg="出错啦")
 
     # 禁用
-    # @dept_bp.put('/disable')
     @authorize("admin:dept:edit", log=True)
     def disable(self):
         req_json = json_decode(self.request.body)
@@ -147,7 +138,6 @@ class DeptHandler(BaseHandler):
             return self.success_api(msg="禁用成功")
         return self.fail_api(msg="出错啦")
 
-    # @dept_bp.put('/update')
     @authorize("admin:dept:edit", log=True)
     def update(self):
         req_json = json_decode(self.request.body)
@@ -166,7 +156,6 @@ class DeptHandler(BaseHandler):
             return self.fail_api(msg="更新失败")
         return self.success_api(msg="更新成功")
 
-    # @dept_bp.delete('/remove/<int:_id>')
     @authorize("admin:dept:remove", log=True)
     def remove(self):
         _id = self.get_argument("deptId", "")

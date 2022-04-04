@@ -21,9 +21,13 @@ from . import BaseHandler
 
 
 class {{class_name}}Handler(BaseHandler):
+    # 页面
+    @authorize("admin:{{view_name}}:main", log=True)
     def main(self):
         return self.render_template('admin/{{view_name}}/main.html')
 
+    # 分页数据
+    @authorize("admin:{{view_name}}:main", log=True)
     def data(self):
         # 获取请求参数
         page = xss_escape(self.get_argument('page', self.settings['config']['default_page'].encode()))
@@ -39,10 +43,13 @@ class {{class_name}}Handler(BaseHandler):
         data = [object_to_dict(i) for i in result]
         return self.table_api(data=data, count=page_result.total)
 
+    # 增加页面
+    @authorize("admin:{{view_name}}:add", log=True)
     def add(self):
         return self.render_template('admin/{{view_name}}/add.html')
 
     # 保存数据
+    @authorize("admin:{{view_name}}:add", log=True)
     def save(self):
         req_json = json_decode(self.request.body)
         _field_dict = {}
@@ -61,12 +68,15 @@ class {{class_name}}Handler(BaseHandler):
             return self.fail_api()
         return self.success_api(msg="保存成功")
 
+    # 编辑页面
+    @authorize("admin:{{view_name}}:edit", log=True)
     def edit(self):
         _id = self.get_argument('id', '')
         _model = session.query({{class_name}}).filter_by(id=_id).first()
         return self.render_template('admin/{{view_name}}/edit.html', model=object_to_dict(_model))
 
     # 启用
+    @authorize("admin:{{view_name}}:edit", log=True)
     def enable(self):
         req_json = json_decode(self.request.body)
         _id = req_json.get('id', '')
@@ -78,6 +88,7 @@ class {{class_name}}Handler(BaseHandler):
         return self.fail_api(msg="出错啦")
 
     # 禁用
+    @authorize("admin:{{view_name}}:edit", log=True)
     def disable(self):
         req_json = json_decode(self.request.body)
         _id = req_json.get("id", "")
@@ -88,6 +99,7 @@ class {{class_name}}Handler(BaseHandler):
             return self.success_api(msg="禁用成功")
         return self.fail_api(msg="出错啦")
 
+    @authorize("admin:{{view_name}}:edit", log=True)
     def update(self):
         req_json = json_decode(self.request.body)
         id = req_json.get("id", "")
@@ -100,6 +112,7 @@ class {{class_name}}Handler(BaseHandler):
             return self.fail_api(msg="更新失败")
         return self.success_api(msg="更新成功")
 
+    @authorize("admin:{{view_name}}:remove", log=True)
     def remove(self):
         _id = self.get_argument("id", "")
         if not _id:
@@ -109,6 +122,7 @@ class {{class_name}}Handler(BaseHandler):
             return self.fail_api(msg="删除失败")
         return self.success_api(msg="删除成功")
 
+    @authorize("admin:{{view_name}}:remove", log=True)
     def batch_remove(self):
         ids = self.get_arguments('ids[]')
         if not ids:

@@ -21,14 +21,12 @@ from . import BaseHandler
 
 class RoleHandler(BaseHandler):
 
-    # 角色管理
-    # @admin_role.get('/')
+    # 页面
     @authorize("admin:role:main", log=True)
     def main(self):
         return self.render_template('admin/role/main.html')
 
-    # 角色表格数据
-    # @admin_role.get('/data')
+    # 分页数据
     @authorize("admin:role:main", log=True)
     def data(self):
         # path = "static/admin/admin/data/role.json"
@@ -55,12 +53,12 @@ class RoleHandler(BaseHandler):
             item['roleCode'] = item['code']
         return self.table_api(data=data, count=page_result.total)
 
-    # 角色增加
+    # 增加页面
     @authorize("admin:role:add", log=True)
     def add(self):
         return self.render_template('admin/role/add.html')
 
-    # 角色增加
+    # 增加保存
     @authorize("admin:role:add", log=True)
     def save(self):
         req = json_decode(self.request.body)
@@ -84,18 +82,13 @@ class RoleHandler(BaseHandler):
             return self.fail_api()
         return self.success_api(msg="成功")
 
-
     # 角色授权
-    # @admin_role.get('/power/<int:_id>')
     @authorize("admin:role:power", log=True)
     def power(self):
-        # _id = "2"
         _id = self.get_argument('id', '')
         return self.render_template('admin/role/power.html', id=_id)
 
-
     # 获取角色权限
-    # @admin_role.get('/getRolePower/<int:id>')
     @authorize("admin:role:main", log=True)
     def get_role_power(self):
         # path = "static/admin/admin/data/power.json"
@@ -126,7 +119,6 @@ class RoleHandler(BaseHandler):
         return self.jsonify(res)
 
     # 保存角色权限
-    # @admin_role.put('/saveRolePower')
     @authorize("admin:role:edit", log=True)
     def save_role_power(self):
         power_ids = self.get_argument("powerIds")
@@ -141,7 +133,6 @@ class RoleHandler(BaseHandler):
         return self.success_api(msg="授权成功")
 
     # 角色编辑
-    # @admin_role.get('/edit/<int:id>')
     @authorize("admin:role:edit", log=True)
     def edit(self):
         id = xss_escape(self.get_argument('id', ''))
@@ -153,7 +144,6 @@ class RoleHandler(BaseHandler):
         return self.render_template('admin/role/edit.html', role=entity_dict)
 
     # 更新角色
-    # @admin_role.put('/update')
     @authorize("admin:role:edit", log=True)
     def update(self):
         req_json = json_decode(self.request.body)
@@ -171,9 +161,7 @@ class RoleHandler(BaseHandler):
             return self.fail_api(msg="更新角色失败")
         return self.success_api(msg="更新角色成功")
 
-
     # 启用用户
-    # @admin_role.put('/enable')
     @authorize("admin:role:edit", log=True)
     def enable(self):
         req_json = json_decode(self.request.body)
@@ -186,8 +174,7 @@ class RoleHandler(BaseHandler):
         return self.fail_api(msg="数据错误")
 
     # 禁用用户
-    # @admin_role.put('/disable')
-    # @authorize("admin:role:edit", log=True)
+    @authorize("admin:role:edit", log=True)
     def disable(self):
         req_json = json_decode(self.request.body)
         _id = req_json.get('roleId')
@@ -198,9 +185,7 @@ class RoleHandler(BaseHandler):
             return self.success_api(msg="禁用成功")
         return self.fail_api(msg="数据错误")
 
-
     # 角色删除
-    # @admin_role.delete('/remove/<int:id>')
     @authorize("admin:role:remove", log=True)
     def remove(self):
         id = self.get_argument('id', '')
@@ -218,13 +203,13 @@ class RoleHandler(BaseHandler):
         return self.success_api(msg="角色删除成功")
 
     # 批量删除
-    # @admin_role.delete('/batchRemove')
     @authorize("admin:role:remove", log=True)
-    # @login_required
     def batch_remove(self):
         ids = self.get_arguments('ids[]')
-        # TODO: 删除该角色的权限和用户
-        # 返回受影响的行数
-        effect_row_num = session.query(Role).filter(Role.id.in_(ids)).delete()
-        session.commit()
+        for id in ids:
+            role = session.query(Role).filter_by(id=id).first()
+            # 删除该角色的权限和用户
+            role.power = []
+            role.user = []
+            session.query(Role).filter_by(id=id).delete()
         return self.success_api(msg="批量删除成功")

@@ -22,13 +22,11 @@ from . import BaseHandler
 
 
 class FileHandler(BaseHandler):
-    # @admin_file.get('/')
     @authorize("admin:file:main", log=True)
     def main(self):
         return self.render_template('admin/file/main.html')
 
     # 图片数据
-    # @admin_file.get('/table')
     @authorize("admin:file:main", log=True)
     def data(self):
         # path = "static/admin/admin/data/fileTable.json"
@@ -52,13 +50,11 @@ class FileHandler(BaseHandler):
         return self.table_api(data=data, count=page_result.total)
 
     # 上传页面
-    # @admin_file.get('/upload')
     @authorize("admin:file:add", log=True)
     def upload(self):
         return self.render_template('admin/file/upload.html')
 
     # 上传接口
-    # @admin_file.post('/upload')
     @authorize("admin:file:add", log=True)
     def uploadapi(self):
         # print(self.get_argument("files", ""))
@@ -93,7 +89,6 @@ class FileHandler(BaseHandler):
             return self.jsonify(res)
 
     # 图片删除
-    # @admin_file.route('/delete', methods=['GET', 'POST'])
     @authorize("admin:file:delete", log=True)
     def delete(self):
         _id = self.get_argument('id', '')
@@ -106,7 +101,6 @@ class FileHandler(BaseHandler):
             return self.fail_api(msg="删除失败")
 
     # 图片批量删除
-    # @admin_file.route('/batchRemove', methods=['GET', 'POST'])
     @authorize("admin:file:delete", log=True)
     def batch_remove(self):
         ids = self.get_arguments('ids[]')

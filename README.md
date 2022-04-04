@@ -92,7 +92,7 @@ pip install -r requirements.txt -i https://pypi.douban.com/simple
 config/__init__.py
 # 执行命令启动项目 【项目第一次启动, 会自动创建数据库, 并导入初始化数据】
 python run.py
-# 访问
+# 访问  默认后台账号密码  admin  admin
 http://localhost:3000/
 ```
 

@@ -283,9 +283,9 @@ CREATE TABLE `admin_user`  (
 -- ----------------------------
 -- Records of admin_user
 -- ----------------------------
-INSERT INTO `admin_user` VALUES (1, 'admin', 'pbkdf2:sha256:150000$raM7mDSr$58fe069c3eac01531fc8af85e6fc200655dd2588090530084d182e6ec9d52c85', NULL, '2022-06-01 17:28:55', 1, '超级管理', '要是不能把握时机，就要终身蹭蹬，一事无成！', '/static/admin/admin/images/avatar.jpg', 1);
-INSERT INTO `admin_user` VALUES (7, 'test', 'pbkdf2:sha256:150000$cRS8bYNh$adb57e64d929863cf159f924f74d0634f1fecc46dba749f1bfaca03da6d2e3ac', '2021-03-22 20:03:42', '2022-06-01 17:29:47', 1, '超级管理', '要是不能把握时机，就要终身蹭蹬，一事无成', '/static/admin/admin/images/avatar.jpg', 1);
-INSERT INTO `admin_user` VALUES (8, 'demo', 'pbkdf2:sha256:150000$skME1obT$6a2c20cd29f89d7d2f21d9e373a7e3445f70ebce3ef1c3a555e42a7d17170b37', '2022-06-01 17:30:39', '2022-06-01 17:30:52', 1, '风', NULL, '/static/admin/admin/images/avatar.jpg', 7);
+INSERT INTO `admin_user` VALUES (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', NULL, '2022-06-01 17:28:55', 1, '超级管理', '要是不能把握时机，就要终身蹭蹬，一事无成！', '/static/admin/admin/images/avatar.jpg', 1);
+INSERT INTO `admin_user` VALUES (7, 'test', '21232f297a57a5a743894a0e4a801fc3', '2021-03-22 20:03:42', '2022-06-01 17:29:47', 1, '超级管理', '要是不能把握时机，就要终身蹭蹬，一事无成', '/static/admin/admin/images/avatar.jpg', 1);
+INSERT INTO `admin_user` VALUES (8, 'demo', '21232f297a57a5a743894a0e4a801fc3', '2022-06-01 17:30:39', '2022-06-01 17:30:52', 1, '风', NULL, '/static/admin/admin/images/avatar.jpg', 7);
 
 -- ----------------------------
 -- Table structure for admin_user_role

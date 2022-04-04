@@ -23,8 +23,7 @@ class User(BaseModel):
     dept = relationship("Dept", backref=backref('admin_dept'))
 
     def set_password(self, password):
-        self.password_hash = hashlib.md5(password).hexdigest()
+        self.password_hash = hashlib.md5(password.encode(encoding='UTF-8')).hexdigest()
 
     def validate_password(self, password):
-        # return check_password_hash(self.password_hash, password)
-        return self.password_hash == hashlib.md5(password).hexdigest()
+        return self.password_hash == hashlib.md5(password.encode(encoding='UTF-8')).hexdigest()

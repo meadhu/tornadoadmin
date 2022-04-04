@@ -6,23 +6,18 @@ from __future__ import absolute_import
 import json
 
 from common import scheduler_proj
+from common.HttpHelper import authorize
 from . import BaseHandler
 
 
 class TaskHandler(BaseHandler):
     # 任务管理
-    # @admin_task.route('/add_job', methods=['GET'])
-    def add_task(self):
-        # scheduler.add_job(func=tasks.get(), id='4', args=(1, 1), trigger='interval', seconds=3,
-        #                   replace_existing=True)
-        return '6'
-
-    # @admin_task.get('/')
+    @authorize("admin:task:remove", log=True)
     def main(self):
         return self.render_template('admin/task/main.html')
 
-    # 获取
-    # @admin_task.route('/data', methods=['GET'])
+    # 获取数据
+    @authorize("admin:task:remove", log=True)
     def data(self):
         # jobs = scheduler_proj.get_jobs()
         # print(jobs)
@@ -35,13 +30,17 @@ class TaskHandler(BaseHandler):
             data = json.loads(load_f.read())
             self.table_api(data=data['data'], count=data['count'])
 
-    # 增加
-    # @admin_task.get('/add')
+    # def add_task(self):
+    #     # scheduler.add_job(func=tasks.get(), id='4', args=(1, 1), trigger='interval', seconds=3,
+    #     #                   replace_existing=True)
+    #     return '6'
+
+    # 增加页面
     def add(self):
         task_list = []
         return self.render_template('admin/task/add.html', task_list=task_list)
 
-    # @admin_task.post('/save')
+    # 保存增加
     def save(self):
         # _id = request.json.get("id")
         # name = request.json.get("id")
@@ -78,8 +77,7 @@ class TaskHandler(BaseHandler):
         #         replace_existing=True)
         return self.success_api()
 
-    # 恢复
-    # @admin_task.put('/enable')
+    # 启用
     def enable(self):
         # _id = request.json.get('id')
         # # print(id)
@@ -88,7 +86,7 @@ class TaskHandler(BaseHandler):
         #     return success_api(msg="启动成功")
         return self.fail_api(msg="数据错误")
 
-    # 暂停
+    # 禁用
     # @admin_task.put('/disable')
     def disable(self):
         # _id = request.json.get('id')
@@ -98,7 +96,6 @@ class TaskHandler(BaseHandler):
         return self.fail_api(msg="数据错误")
 
     # 移除
-    # @admin_task.delete('/remove/<int:_id>')
     def remove(self):
         # scheduler.remove_job(str(_id))
         return self.success_api(msg="删除成功")

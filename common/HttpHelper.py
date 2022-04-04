@@ -9,7 +9,7 @@ import tornado.web
 
 def authorize(power: str, log: bool = False):
     def decorator(func):
-        # @tornado.web.authenticated
+        @tornado.web.authenticated
         @wraps(func)
         def wrapper(*args, **kwargs):
             # if not power in session.get('permissions'):
@@ -20,7 +20,7 @@ def authorize(power: str, log: bool = False):
             #     else:
             #         return jsonify(success=False, msg="权限不足!")
             # if log:
-            #     admin_log(request=request, is_access=True)
+            #     admin_log(is_access=True)
             return func(*args, **kwargs)
 
         return wrapper

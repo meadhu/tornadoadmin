@@ -22,13 +22,11 @@ from . import BaseHandler
 
 class LogHandler(BaseHandler):
     # 日志管理
-    # @admin_log.get('/')
     @authorize("admin:log:main")
     def main(self):
         return self.render_template('admin/admin_log/main.html')
 
     # 登录日志
-    # @admin_log.get('/loginLog')
     @authorize("admin:log:main")
     def login_log(self):
         # path = "static/admin/admin/data/loginLog.json"
@@ -46,7 +44,6 @@ class LogHandler(BaseHandler):
         return self.table_api(data=data, count=page_result.total)
 
     # 操作日志
-    # @admin_log.get('/operateLog')
     @authorize("admin:log:main")
     def operate_log(self):
         # path = "static/admin/admin/data/operateLog.json"

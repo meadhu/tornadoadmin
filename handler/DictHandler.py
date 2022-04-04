@@ -26,7 +26,6 @@ class DictHandler(BaseHandler):
     def main(self):
         return self.render_template('admin/dict/main.html')
 
-    # @admin_dict.get('/dictType/data')
     @authorize("admin:dict:main", log=True)
     def dict_type_data(self):
         # 获取请求参数
@@ -51,12 +50,10 @@ class DictHandler(BaseHandler):
         #     data = json.loads(load_f.read())
         #     self.jsonify(data)
 
-    # @admin_dict.get('/dictType/add')
     @authorize("admin:dict:add", log=True)
     def dict_type_add(self):
         return self.render_template('admin/dict/add.html')
 
-    # @admin_dict.post('/dictType/save')
     @authorize("admin:dict:add", log=True)
     def dict_type_save(self):
         req_json = json_decode(self.request.body)
@@ -72,7 +69,6 @@ class DictHandler(BaseHandler):
         return self.fail_api(msg="增加失败")
 
     #  编辑字典类型
-    # @admin_dict.get('/dictType/edit')
     @authorize("admin:dict:edit", log=True)
     def dict_type_edit(self):
         _id = self.get_argument('dictTypeId', '')
@@ -81,7 +77,6 @@ class DictHandler(BaseHandler):
         return self.render_template('admin/dict/edit.html', dict_type=dict_type)
 
     #  编辑字典类型
-    # @admin_dict.put('/dictType/update')
     @authorize("admin:dict:edit", log=True)
     def dict_type_update(self):
         req_json = json_decode(self.request.body)
@@ -100,7 +95,6 @@ class DictHandler(BaseHandler):
         return self.success_api(msg="更新成功")
 
     # 启用字典
-    # @admin_dict.put('/dictType/enable')
     @authorize("admin:dict:edit", log=True)
     def dict_type_enable(self):
         req_json = json_decode(self.request.body)
@@ -113,7 +107,6 @@ class DictHandler(BaseHandler):
         return self.success_api("启动成功")
 
     # 禁用字典
-    # @admin_dict.put('/dictType/disable')
     @authorize("admin:dict:edit", log=True)
     def dict_type_disable(self):
         req_json = json_decode(self.request.body)
@@ -126,7 +119,6 @@ class DictHandler(BaseHandler):
         return self.success_api("禁用成功")
 
     # 删除字典类型
-    # @admin_dict.delete('/dictType/remove/<int:_id>')
     @authorize("admin:dict:remove", log=True)
     def dict_type_remove(self):
         _id = self.get_argument('id', '')
@@ -137,7 +129,6 @@ class DictHandler(BaseHandler):
             return self.fail_api(msg="删除失败")
         return self.success_api(msg="删除成功")
 
-    # @admin_dict.get('/dictData/data')
     @authorize("admin:dict:main", log=True)
     def dict_data_data(self):
         # type_code = xss_escape(request.args.get('typeCode', type=str))
@@ -169,14 +160,12 @@ class DictHandler(BaseHandler):
         return self.table_api(data=data, count=page_result.total)
 
     # 增加字典数据
-    # @admin_dict.get('/dictData/add')
     @authorize("admin:dict:add", log=True)
     def dict_data_add(self):
         type_code = self.get_argument('typeCode', "")
         return self.render_template('admin/dict/data/add.html', type_code=type_code)
 
     # 增加字典数据
-    # @admin_dict.post('/dictData/save')
     @authorize("admin:dict:add", log=True)
     def dict_data_save(self):
         req_json = json_decode(self.request.body)
@@ -192,8 +181,7 @@ class DictHandler(BaseHandler):
             return self.fail_api("增加失败")
         return self.success_api("增加成功")
 
-    #  编辑字典数据
-    # @admin_dict.get('/dictData/edit')
+    # 编辑字典数据
     @authorize("admin:dict:edit", log=True)
     def dict_data_edit(self):
         _id = self.get_argument("dataId", "")
@@ -203,8 +191,7 @@ class DictHandler(BaseHandler):
         dict_data = object_to_dict(dict_data_model)
         return self.render_template('admin/dict/data/edit.html', dict_data=dict_data)
 
-    #  编辑字典数据
-    # @admin_dict.put('/dictData/update')
+    # 编辑字典数据
     @authorize("admin:dict:edit", log=True)
     def dict_data_update(self):
         req_json = json_decode(self.request.body)
@@ -220,7 +207,6 @@ class DictHandler(BaseHandler):
         return self.success_api(msg="更新成功")
 
     # 启用字典数据
-    # @admin_dict.put('/dictData/enable')
     @authorize("admin:dict:edit", log=True)
     def dict_data_enable(self):
         req_json = json_decode(self.request.body)
@@ -233,7 +219,6 @@ class DictHandler(BaseHandler):
         return self.success_api(msg="启动成功")
 
     # 禁用字典数据
-    # @admin_dict.put('/dictData/disable')
     @authorize("admin:dict:edit", log=True)
     def dict_data_disable(self):
         req_json = json_decode(self.request.body)
@@ -246,7 +231,6 @@ class DictHandler(BaseHandler):
         return self.success_api(msg="禁用成功")
 
     # 删除字典类型
-    # @admin_dict.delete('dictData/remove/<int:id>')
     @authorize("admin:dict:remove", log=True)
     def dict_data_remove(self):
         _id = self.get_argument('dataId', '')

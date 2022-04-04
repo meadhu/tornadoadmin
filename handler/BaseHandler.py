@@ -7,56 +7,45 @@ import traceback
 
 import tornado.web
 import tornado.util
+from tornado.escape import xhtml_escape as xss_escape
 
+from common import session
+from common.DbHelper import object_to_dict
 from common.HttpHelper import HttpHelper, NoResultError
+from models import User, AdminLog
 
 
 class CustomExceptionHandler(tornado.web.RequestHandler):
-    # Override prepare() instead of get() to cover all possible HTTP methods.
-    # def prepare(self):
-    #     self.set_status(404)
-    #     self.render("errors/404.html")
-
     def write_error(self, status_code, **kwargs):
         if status_code == 403:
             return self.render("errors/403.html")
         if status_code == 404:
             return self.render("errors/404.html")
         elif status_code == 500:
-            excp = kwargs['exc_info'][1]
-            tb = kwargs['exc_info'][2]
-            stack = traceback.extract_tb(tb)
-            clean_stack = [i for i in stack if i[0][-6:] != 'gen.py' and i[0][-13:] != 'concurrent.py']
-            error_msg = '{}\n  Exception: {}'.format(''.join(traceback.format_list(clean_stack)), excp)
-            # do something with this error now... e.g., send it to yourself
-            # on slack, or log it.
-            # logging.error(error_msg)  # do something with your error...
-            # don't forget to show a user friendly error page!
-            return self.render("errors/500.html", error_msg=error_msg)
+            return self.render("errors/500.html")
         else:
             self.write("undefined error")
             self.finish()
 
 
 class BaseHandler(HttpHelper, CustomExceptionHandler):
+    def get_current_user(self):  # 重写get_current_user()方法
+        return self.get_secure_cookie("login_user_id", None)
+
     def get(self, slug=None):
         """
         重写父类 get() 方法
         :param slug: action 参数
         :return:
         """
-        # super().get()
         slug = slug if slug else "main"
         if not hasattr(self, slug):
-            # return self.render("errors/404")
             raise tornado.web.HTTPError(404)
-        # print("slug: %s", slug)
         eval("self." + slug + "()")
 
     def post(self, slug=None):
         slug = slug if slug else "main"
         if not hasattr(self, slug):
-            # return self.render("errors/404")
             raise tornado.web.HTTPError(404)
         eval("self." + slug + "()")
 
@@ -83,24 +72,25 @@ class BaseHandler(HttpHelper, CustomExceptionHandler):
     def render_template(self, tpl, **render_data):
         return self.render(tpl, **render_data)
 
-    def get_current_user(self):
-        user_id = self.get_secure_cookie("user")
-        if not user_id:
-            return None
-        # TODO:
-        # return self.backend.get_user_by_id(user_id)
-
     async def prepare(self):
         # get_current_user cannot be a coroutine, so set
         # self.current_user in prepare instead.
-        user_id = self.get_secure_cookie("blogdemo_user")
+        user_id = self.get_secure_cookie("login_user_id")
         if user_id:
-            self.current_user = self.queryone(
-                "SELECT * FROM authors WHERE id = %s", int(user_id)
-            )
-        # if self.request.headers['Content-Type'] == 'application/x-json':
-        #     self.args = json_decode(self.request.body)
-        # Access self.args directly instead of using self.get_argument.
+            self.current_user = object_to_dict(session.query(User).filter_by(id=user_id).first())
 
-    async def any_author_exists(self):
-        return bool(self.query("SELECT * FROM authors LIMIT 1"))
+    def login_log(self, uid, is_access):
+        info = {
+            'method': self.request.method,
+            'url': self.request.path,
+            'ip': self.request.remote_ip,
+            'user_agent': xss_escape(self.request.headers.get('User-Agent')),
+            'desc': xss_escape(self.get_argument('username', '')),
+            'uid': uid,
+            'success': int(is_access)
+        }
+        log = AdminLog(**info)
+        session.add(log)
+        session.flush()
+        session.commit()
+        return log.id

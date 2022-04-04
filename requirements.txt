@@ -1,4 +1,5 @@
 APScheduler==3.9.1
+async-timeout==4.0.2
 backports.zoneinfo==0.2.1
 beautifulsoup4==4.10.0
 bs4==0.0.1
@@ -6,6 +7,7 @@ certifi==2021.10.8
 charset-normalizer==2.0.12
 commonmark==0.9.1
 dataclasses==0.8
+Deprecated==1.2.13
 distlib==0.3.4
 filelock==3.4.1
 gevent==21.12.0
@@ -13,13 +15,19 @@ greenlet==1.1.2
 idna==3.3
 importlib-metadata==4.8.3
 importlib-resources==5.4.0
+Jinja2==3.0.3
+MarkupSafe==2.0.1
+packaging==21.3
+packet==0.5
 pip-search==0.0.11
 platformdirs==2.4.0
 psutil==5.9.0
 Pygments==2.11.2
 PyMySQL==1.0.2
+pyparsing==3.0.7
 pytz==2022.1
 pytz-deprecation-shim==0.1.0.post0
+redis==4.2.2
 requests==2.27.1
 rich==12.0.1
 six==1.16.0
@@ -35,6 +43,7 @@ tzdata==2022.1
 tzlocal==4.1
 urllib3==1.26.9
 virtualenv==20.14.0
+wrapt==1.14.0
 zipp==3.6.0
 zope.event==4.5.0
 zope.interface==5.4.0
