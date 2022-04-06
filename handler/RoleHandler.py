@@ -49,6 +49,7 @@ class RoleHandler(BaseHandler):
         result = page_result.items
         data = [object_to_dict(i) for i in result]
         for item in data:
+            item['roleId'] = item['id']
             item['roleName'] = item['name']
             item['roleCode'] = item['code']
         return self.table_api(data=data, count=page_result.total)
@@ -165,9 +166,9 @@ class RoleHandler(BaseHandler):
     @authorize("admin:role:edit", log=True)
     def enable(self):
         req_json = json_decode(self.request.body)
-        id = req_json.get('roleId')
-        if id:
-            res = session.query(Role).filter_by(id=id).update({"enable": 1})
+        _id = req_json.get('roleId', '')
+        if _id:
+            res = session.query(Role).filter_by(id=_id).update({"enable": 1})
             if not res:
                 return self.fail_api(msg="出错啦")
             return self.success_api(msg="启动成功")
@@ -177,7 +178,7 @@ class RoleHandler(BaseHandler):
     @authorize("admin:role:edit", log=True)
     def disable(self):
         req_json = json_decode(self.request.body)
-        _id = req_json.get('roleId')
+        _id = req_json.get('roleId', '')
         if _id:
             res = session.query(Role).filter_by(id=_id).update({"enable": 0})
             if not res:

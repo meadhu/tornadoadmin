@@ -34,11 +34,6 @@
     {% end %}
 </script>
 
-<script type="text/html" id="task-status">
-    <input type="checkbox" name="enable" value="" lay-skin="switch" lay-text="正在运行|已经暂停"
-           lay-filter="role-enable">
-</script>
-
 <script type="text/html" id="task-createTime">
 </script>
 {% include '../common/footer.html' %}
@@ -60,7 +55,13 @@
         { title: '函数', field: 'func', align: 'center' },
         { title: '名称', field: 'name', align: 'center' },
         { title: '开始时间', field: 'start_date', align: 'center',templet: '#task-createTime'},
-        { title: '是否运行', field: 'next_run_time', align: 'center', templet: '#task-status' },
+        { title: '是否运行', field: 'next_run_time', align: 'center', templet: function(d){
+           res = '<input type="checkbox" name="enable" value="'+d.id+'" lay-skin="switch" lay-text="正在运行|已经暂停" lay-filter="task-status">';
+           if (d.enable == 1) {
+             res = '<input type="checkbox" name="enable" value="'+d.id+'" lay-skin="switch" lay-text="正在运行|已经暂停" lay-filter="task-status" checked>';
+           }
+           return res;
+        } },
         { title: '类型', field: 'trigger', align: 'center' },
         { title: '操作', toolbar: '#role-bar', align: 'center', width: 195 }
       ]

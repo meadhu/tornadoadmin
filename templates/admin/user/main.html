@@ -112,7 +112,13 @@
         { title: '姓名', field: 'realname', align: 'center', width: 110 },
         { title: '账号', field: 'username', align: 'center' },
         { title: '部门', field: 'dept', align: 'center' },
-        { title: '启用', field: 'enable', align: 'center', templet: '#user-enable', width: 120 },
+        { title: '启用', field: 'enable', align: 'center', width: 120, templet: function(d){
+           res = '<input type="checkbox" name="enable" value="'+d.id+'" lay-skin="switch" lay-text="启用|禁用" lay-filter="user-enable">';
+           if (d.enable == 1) {
+             res = '<input type="checkbox" name="enable" value="'+d.id+'" lay-skin="switch" lay-text="启用|禁用" lay-filter="user-enable" checked>';
+           }
+           return res;
+        } },
         { title: '注册时间', field: 'create_at', align: 'center' },
         { title: '更新时间', field: 'update_at', align: 'center' },
         { title: '操作', toolbar: '#user-bar', align: 'center', width: 130 }

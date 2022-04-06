@@ -10,8 +10,8 @@ import tornado.util
 
 from common import session
 from common.DbHelper import object_to_dict
-from common.HttpHelper import HttpHelper, NoResultError
-from models import User, AdminLog
+from common.HttpHelper import HttpHelper
+from models import User
 
 
 class CustomExceptionHandler(tornado.web.RequestHandler):
@@ -30,6 +30,24 @@ class CustomExceptionHandler(tornado.web.RequestHandler):
 class BaseHandler(HttpHelper, CustomExceptionHandler):
     def get_current_user(self):  # 重写get_current_user()方法
         return self.get_secure_cookie("login_user_id", None)
+
+    def get_current_user_power(self):
+        """
+        获取指定用户的权限
+        :return: ["admin:dept:main", "admin:log:main"]
+        """
+        uid = self.get_current_user()
+        current_user = session.query(User).filter_by(id=uid).first()
+        user_roles = current_user.role
+        user_power = []
+        for i in user_roles:
+            if i.enable == 0:
+                continue
+            for p in i.power:
+                if p.enable == 0:
+                    continue
+                user_power.append(p.code)
+        return user_power
 
     def get(self, slug=None):
         """

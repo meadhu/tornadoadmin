@@ -11,64 +11,28 @@ from common import session
 from models import AdminLog
 
 
-def login_log(request, uid, is_access):
-    info = {
-        'method': request.method,
-        'url': request.path,
-        'ip': request.remote_ip,
-        'user_agent': xss_escape(request.headers.get('User-Agent')),
-        # 'desc': xss_escape(request.get_argument('username', '')),
-        'uid': uid,
-        'success': int(is_access)
-    }
-    log = AdminLog(**info)
-    session.add(log)
-    session.flush()
-    session.commit()
-    return log.id
-
-
-def admin_log(request, uid, is_access):
-    info = {
-        'method': request.method,
-        'url': request.path,
-        'ip': request.remote_ip,
-        'user_agent': xss_escape(request.headers.get('User-Agent')),
-        'desc': request.body,
-        'uid': uid,
-        'success': int(is_access)
-    }
-    log = AdminLog(**info)
-    session.add(log)
-    session.commit()
-    return log.id
-
-
 def authorize(power: str, log: bool = False):
     def decorator(func):
         @tornado.web.authenticated
         @wraps(func)
         def wrapper(*args, **kwargs):
-            request = args[0].request
-
-            print(request)
-            print(request.body)
-            print(**kwargs)
-            # if not power in session.get('permissions'):
-            #     if log:
-            #         admin_log(request=request, is_access=False)
-            #     if request.method == 'GET':
-            #         abort(403)
-            #     else:
-            #         return jsonify(success=False, msg="权限不足!")
+            handler = args[0]
+            request = handler.request
+            user_powers = handler.get_current_user_power()
+            if not power in user_powers:
+                if log:
+                    handler.admin_log(request=request, uid=handler.get_current_user(), is_access=False)
+                if request.method == 'GET':
+                    raise tornado.web.HTTPError(403)
+                else:
+                    return handler.jsonify(success=False, msg="权限不足!")
             if log:
-                admin_log(request=request, uid=10, is_access=True)
+                handler.admin_log(request=request, uid=handler.get_current_user(), is_access=True)
             return func(*args, **kwargs)
 
         return wrapper
 
     return decorator
-
 
 class HttpHelper(tornado.web.RequestHandler):
     def jsonify(self, *args, **kwargs):
@@ -126,6 +90,33 @@ class HttpHelper(tornado.web.RequestHandler):
         namespace.update({"url_for": self.url_for, "authorize": authorize})
         return namespace
 
+    def login_log(self, uid, is_access):
+        info = {
+            'method': self.request.method,
+            'url': self.request.path,
+            'ip': self.request.remote_ip,
+            'user_agent': xss_escape(self.request.headers.get('User-Agent')),
+            # 'desc': xss_escape(request.get_argument('username', '')),
+            'uid': uid,
+            'success': int(is_access)
+        }
+        log = AdminLog(**info)
+        session.add(log)
+        session.flush()
+        session.commit()
+        return log.id
 
-class NoResultError(Exception):
-    pass
+    def admin_log(self, request, uid, is_access):
+        info = {
+            'method': request.method,
+            'url': request.path,
+            'ip': request.remote_ip,
+            'user_agent': xss_escape(request.headers.get('User-Agent')),
+            'desc': request.body,
+            'uid': uid,
+            'success': int(is_access)
+        }
+        log = AdminLog(**info)
+        session.add(log)
+        session.commit()
+        return log.id

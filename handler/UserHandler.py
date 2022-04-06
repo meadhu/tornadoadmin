@@ -68,6 +68,7 @@ class UserHandler(BaseHandler):
         result = page_result.items
         data = [object_to_dict(i) for i in result]
         for i, item in enumerate(data):
+            item['userId'] = item['id']
             item['realName'] = item['realname']
             item['dept'] = result[i].dept.dept_name if result[i].dept else ''
         return self.table_api(data=data, count=page_result.total)
@@ -231,7 +232,8 @@ class UserHandler(BaseHandler):
     # 启用用户
     @authorize("admin:user:edit", log=True)
     def enable(self):
-        _id = self.get_argument('userId', '')
+        req_json = json_decode(self.request.body)
+        _id = req_json.get('userId', '')
         if not _id:
             return self.fail_api(msg="数据错误")
         res = session.query(User).filter_by(id=_id).update({"enable": 1})
@@ -242,7 +244,8 @@ class UserHandler(BaseHandler):
     # 禁用用户
     @authorize("admin:user:edit", log=True)
     def disable(self):
-        _id = self.get_argument('userId', '')
+        req_json = json_decode(self.request.body)
+        _id = req_json.get('userId', '')
         if not _id:
             return self.fail_api(msg="数据错误")
         res = session.query(User).filter_by(id=_id).update({"enable": 0})
