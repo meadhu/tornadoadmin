@@ -94,4 +94,5 @@ class BaseHandler(HttpHelper, CustomExceptionHandler):
         # self.current_user in prepare instead.
         user_id = self.get_secure_cookie("login_user_id")
         if user_id:
-            self.current_user = object_to_dict(session.query(User).filter_by(id=user_id).first())
+            user_model = session.query(User).filter_by(id=user_id).first()
+            self.current_user = object_to_dict(user_model) if user_model else None

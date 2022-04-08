@@ -172,7 +172,7 @@ python app.py gen_crud admin_project
 </div>
 
 ```shell
-# 5. 启动项目，访问 http://localhost:3000/admin/project/main
+# 5. 启动项目，访问 http://localhost:3001/admin/project/main
 ```
 <div align="center">
   <img  width="100%" style="border-radius:10px;margin-top:20px;margin-bottom:20px;box-shadow: 2px 0 6px gray;" src="docs/gii/demo16.png" />

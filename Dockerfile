@@ -1,5 +1,7 @@
 FROM python:3.6.15
 
+# 获得 root 访问权限
+USER root
 
 ENV TIME_ZONE Asia/Shanghai
 ENV PIPURL "https://pypi.tuna.tsinghua.edu.cn/simple"
