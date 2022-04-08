@@ -21,7 +21,7 @@ stages:
         repository: https://gitee.com/meadhu/tornadoadmin.git
         username: meadhu
         password: abcd1234
-        tag: ${GITEE_PIPELINE_BUILD_NUMBER}
+        tag: latest
         dockerfile: ./Dockerfile
         isCache: true
   - name: stage-031db9d4
