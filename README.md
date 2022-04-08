@@ -7,17 +7,7 @@
   <h4 align="center">
     基于Tornado的ORM管理后台，<a href="http://115.126.75.174:3001/">演示地址</a> 
   </h4>
-
 </div>
-
-
-<div style="color:red; display:none;">
-重要说明:
-项目使用的UI来源 <a href="https://gitee.com/pear-admin/pear-admin-flask">【Pear Admin Flask】</a>，感谢原作者分享 
-</div>
-
-
-
 
 <div align="center">
   <img  width="100%" style="border-radius:10px;margin-top:20px;margin-bottom:20px;box-shadow: 2px 0 6px gray;" src="docs/screen/screen10.png" />
