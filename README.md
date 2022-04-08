@@ -5,13 +5,13 @@
     Tornado Admin
   </h1>
   <h4 align="center">
-    基于Tornado的ORM管理后台
+    基于Tornado的ORM管理后台，<a href="http://115.126.75.174:3001/">演示地址</a> 
   </h4>
 
 </div>
 
 
-<div style="color:red">
+<div style="color:red; display:none;">
 重要说明:
 项目使用的UI来源 <a href="https://gitee.com/pear-admin/pear-admin-flask">【Pear Admin Flask】</a>，感谢原作者分享 
 </div>
@@ -20,15 +20,17 @@
 
 
 <div align="center">
-  <img  width="100%" style="border-radius:10px;margin-top:20px;margin-bottom:20px;box-shadow: 2px 0 6px gray;" src="docs/screen/screen1.png" />
+  <img  width="100%" style="border-radius:10px;margin-top:20px;margin-bottom:20px;box-shadow: 2px 0 6px gray;" src="docs/screen/screen10.png" />
 </div>
 
 #### 项目简介
->Tornado Admin 基于 Tornado 的后台管理系统，拥抱应用广泛的python语言，通过使用本系统，即可快速构建你的功能业务
+>Tornado Admin 基于 python框架 Tornado + Layui 开发的后台管理系统，基于本系统即可快速构建你的功能业务
 >
 >项目旨在为python开发者提供一个后台管理系统的模板，成为您构建信息管理系统，物联网后台....等等应用时灵活，简单的工具
 >
->众人拾柴火焰高，欢迎pythoner参与项目~
+> gii_model 可用于快速反向生成model
+> 
+> gii_crud 快速生成 增删改查前后端代码, 简单调整下, 即可使用
 
 ####  内置功能
 
@@ -39,7 +41,7 @@
 - [x] 登录日志：系统登录日志记录查询包含登录异常。
 - [x] 服务监控：监视当前系统CPU、内存、磁盘、python版本,运行时长等相关信息。
 - [x] 文件上传:   图片上传示例
-- [x] 定时任务:   简单的定时任务
+- [ ] 定时任务:   简单的定时任务
 - [x] 代码生成:   根据表生成model, 根据表生成增删改查后端代码和前台页面
 
 ####  项目结构

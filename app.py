@@ -13,7 +13,7 @@ from tornado.options import define, options
 
 from common.GenTool import GenTool
 
-define("port", default=3000, help="run on the given port", type=int)
+define("port", default=3001, help="run on the given port", type=int)
 define("env", default='dev', type=str)
 os.environ['app_env'] = options.env
 
