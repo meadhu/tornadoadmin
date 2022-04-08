@@ -85,7 +85,7 @@ config/__init__.py
 # 执行命令启动项目 【项目第一次启动, 会自动创建数据库, 并导入初始化数据】
 python run.py
 # 访问  默认后台账号密码  admin  admin
-http://localhost:3000/
+http://127.0.0.1:3001/
 ```
 
 #### 线上docker部署
@@ -99,7 +99,7 @@ docker-compose build
 # docker-compose 运行项目
 docker-compose up -d
 # 访问
-http://XXXX:3000/
+http://<线上IP>:3001/
 ```
 
 #### Venv 安装
