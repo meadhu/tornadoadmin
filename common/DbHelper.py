@@ -27,9 +27,9 @@ class DbHelper:
         self.first_install_check()
 
     def create_instance(self):
-        engine = create_engine(self.db_url)
+        # engine = create_engine(self.db_url)
         # 打开2个连接池, 超时1200s自动关闭
-        # engine = create_engine(self.db_url, pool_size=2, pool_recycle=1200)
+        engine = create_engine(self.db_url, pool_pre_ping=True, pool_size=2, pool_recycle=1200)
         return engine
 
     def first_install_check(self):
