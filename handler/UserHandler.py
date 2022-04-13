@@ -220,10 +220,10 @@ class UserHandler(BaseHandler):
             return self.fail_api("新密码不得为空")
         if new_password != confirm_password:
             return self.fail_api("俩次密码不一样")
-        is_right = current_user.validate_password(password=old_password)
+        is_right = current_user.validate_password(password=old_password.encode("UTF-8"))
         if not is_right:
             return self.fail_api("旧密码错误")
-        current_user.set_password(res_json.get("newPassword"))
+        current_user.set_password(res_json.get("newPassword").encode("UTF-8"))
         session.add(current_user)
         session.commit()
 

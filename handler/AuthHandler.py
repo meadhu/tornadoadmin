@@ -27,7 +27,7 @@ class AuthHandler(BaseHandler):
             return self.fail_api(msg="用户不存在")
         if not user.enable:
             return self.fail_api(msg="用户被暂停使用")
-        if username == user.username and user.validate_password(password):
+        if username == user.username and user.validate_password(password.encode("utf-8")):
             # 登录
             self.set_secure_cookie("login_user_id", str(user.id))
             # 记录登录日志
