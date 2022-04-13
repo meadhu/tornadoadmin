@@ -23,6 +23,11 @@ os.environ['app_env'] = options.env
 if not os.path.exists("logs"):
     os.mkdir("logs")
 options.log_file_prefix = os.path.join(os.path.dirname(__file__), 'logs/tornado_main.log')
+tornado.options.options.logging = "debug"         # 设置日志等级
+tornado.options.options.log_rotate_mode = "time"  # 切割方式：按时间
+tornado.options.options.log_rotate_when = "D"     # 切割单位：天
+tornado.options.options.log_rotate_interval = 1   # 间隔值：1天
+
 
 # print(os.environ)
 
