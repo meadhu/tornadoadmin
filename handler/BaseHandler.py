@@ -7,6 +7,7 @@ import traceback
 
 import tornado.web
 import tornado.util
+from sqlalchemy.exc import InvalidRequestError
 
 from common import session
 from common.DbHelper import object_to_dict
@@ -94,5 +95,12 @@ class BaseHandler(HttpHelper, CustomExceptionHandler):
         # self.current_user in prepare instead.
         user_id = self.get_secure_cookie("login_user_id")
         if user_id:
-            user_model = session.query(User).filter_by(id=user_id).first()
-            self.current_user = object_to_dict(user_model) if user_model else None
+            try:
+                user_model = session.query(User).filter_by(id=user_id).first()
+                self.current_user = object_to_dict(user_model) if user_model else None
+            except InvalidRequestError:
+                session.rollback()
+
+    async def on_finish(self):
+        session.close()
+        super().on_finish()
