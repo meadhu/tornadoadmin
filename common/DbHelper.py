@@ -23,7 +23,7 @@ PASSWORD = config_params.get('MYSQL_PASSWORD') or '123456'
 
 class DbHelper:
     def __init__(self):
-        self.db_url = 'mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8'.format(USERNAME, PASSWORD, HOST, PORT, DATABASE)
+        self.db_url = 'mysql+pymysql://{}:{}@{}:{}/{}?charset=utf8&autocommit=true'.format(USERNAME, PASSWORD, HOST, PORT, DATABASE)
         self.first_install_check()
 
     def create_instance(self):
