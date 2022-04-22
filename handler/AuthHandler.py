@@ -3,6 +3,7 @@
 """
 from __future__ import absolute_import
 
+import tornado
 from tornado.escape import json_decode
 from tornado.escape import xhtml_escape as xss_escape
 from common import session
@@ -17,6 +18,8 @@ class AuthHandler(BaseHandler):
 
     # 登录检测
     def login_post(self):
+        if not self.request.body:
+            return self.fail_api(msg="参数为空")
         req_json = json_decode(self.request.body)
         username = req_json.get('username')
         password = req_json.get('password')
@@ -39,6 +42,8 @@ class AuthHandler(BaseHandler):
         return self.fail_api(msg="用户名或密码错误")
 
     def logout(self):
+        if not self.user_is_logged_in():
+            raise tornado.web.HTTPError(403)
         self.set_secure_cookie("login_user_id", "")
         return self.success_api(msg="退出成功")
 

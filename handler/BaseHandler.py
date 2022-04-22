@@ -29,6 +29,13 @@ class CustomExceptionHandler(tornado.web.RequestHandler):
 
 
 class BaseHandler(HttpHelper, CustomExceptionHandler):
+    def user_is_logged_in(self):
+        """
+        检测用户是否登录
+        :return:
+        """
+        return True if self.get_current_user() else False
+
     def get_current_user(self):  # 重写get_current_user()方法
         return self.get_secure_cookie("login_user_id", None)
 
