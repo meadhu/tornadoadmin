@@ -10,6 +10,7 @@ import sqlparse
 from sqlalchemy import create_engine, inspect
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, class_mapper
+from sqlalchemy.pool import NullPool
 
 from config import config_params
 
@@ -28,8 +29,9 @@ class DbHelper:
 
     def create_instance(self):
         # engine = create_engine(self.db_url)
-        # 打开2个连接池, 超时1200s自动关闭
-        engine = create_engine(self.db_url, pool_pre_ping=True, pool_size=2, pool_recycle=1200)
+        # 打开2个连接池, 超时120s自动关闭
+        # engine = create_engine(self.db_url, pool_pre_ping=True, pool_size=2, pool_recycle=120)
+        engine = create_engine(self.db_url, poolclass=NullPool)
         return engine
 
     def first_install_check(self):
